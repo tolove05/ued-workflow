@@ -1,0 +1,62 @@
+extends layout
+
+block content
+    h1 Add Task
+
+
+    #container(style="width:500px;")
+        form.form-horizontal(action="/add-task",method="post")
+            .control-group
+                label.control-label 任务名
+                .controls
+                    input(type="text",name="name")
+            .control-group
+                label.control-label 设计师
+                .controls
+                    input(type="text",name="stylist")
+            .control-group
+                label.control-label 需求方
+                .controls
+                    input(type="text",name="demand_side")
+            .control-group
+                label.control-label 小时数
+                .controls
+                    input(type="text",name="timer")
+            .control-group
+                label.control-label 备注
+                .controls
+                    input(type="text",name="note")
+            .control-group
+                .controls
+                    button.btn.btn-primary(type="submit") 增加任务
+        h1 Add User
+        form.form-horizontal(action="/add-user",method="post")
+            .control-group
+                label.control-label 用户名
+                .controls
+                    input(type="text",name="name")
+            .control-group
+                label.control-label 密码
+                .controls
+                    input(type="password",name="password")
+            .control-group
+                .controls
+                    button.btn.btn-primary(type="submit") 添加用户
+        h1 Login
+        -if(isLogin)
+            a(href="/login-out") welcome:#{name}  Login out
+        -else
+            form.form-horizontal(action="/login",method="post")
+                .control-group
+                    label.control-label 用户名
+                    .controls
+                        input(type="text",name="name")
+                .control-group
+                    label.control-label 密码
+                    .controls
+                        input(type="password",name="password")
+                .control-group
+                    .controls
+                        button.btn.btn-primary(type="submit") 登陆
+
+
