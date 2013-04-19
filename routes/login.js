@@ -31,7 +31,6 @@ app.post('/login', function (req, res) {
 });
 
 exports.isLogin = function (req) {
-    console.log(req.session._id)
     if (req.session._id) {
         return  req.session._id !== undefined;
     } else {

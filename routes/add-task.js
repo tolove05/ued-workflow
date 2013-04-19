@@ -15,6 +15,11 @@ function trans(s) {
 
 app.post('/add-task', function (req, res) {
 
+    if (!require('./login').isLogin(req)) {
+        res.end('请先登录');
+        return;
+    }
+
     var body = req.body;
 
     var task = {
@@ -27,7 +32,11 @@ app.post('/add-task', function (req, res) {
         //小时数
         timer: trans(body.timer),
         //备注
-        note: trans(body.note)
+        note: trans(body.note),
+        //上传者
+        user_id: req.session._id,
+        //时间戳
+        time_stamp: Date.now()
     };
 
     if (!task.name || !task.stylist || !task.demand_side || !task.timer || !task.note) {

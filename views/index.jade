@@ -3,6 +3,11 @@ extends layout
 block content
     h1 Add Task
 
+    ul
+        -docs.forEach(function(item){
+            li
+                a(href="/task/#{item._id}")=item.name
+        -})
 
     #container(style="width:500px;")
         form.form-horizontal(action="/add-task",method="post")
