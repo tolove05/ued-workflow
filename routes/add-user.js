@@ -27,7 +27,7 @@ app.post('/add-user', function (req, res) {
         return;
     }
 
-    var collection = new DB.Collection(DB.client, 'user');
+    var collection = new DB.Collection(DB.Client, 'user');
     collection.insert(user, {safe: true},
         function () {
             res.end('用户保存成功');

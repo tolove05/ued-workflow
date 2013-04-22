@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         var li = '';
         $(data.data).each(function (i, item) {
 
-            li += '<li>' + item.content + '</li>';
+            li += '<li>' + item.user_id + ',' + item.content + '</li>';
         })
         $('#list').html(li);
     });

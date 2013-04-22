@@ -44,7 +44,7 @@ app.post('/add-task', function (req, res) {
         return;
     }
 
-    var collection = new DB.Collection(DB.client, 'task');
+    var collection = new DB.Collection(DB.Client, 'task');
     collection.insert(task, {safe: true},
         function () {
             res.end('保存成功');

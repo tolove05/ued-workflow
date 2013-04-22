@@ -24,7 +24,7 @@ app.get(/^\/task\/([a-z0-9]{24})$/, function (req, res) {
         return;
     }
 
-    var task = new DB.Collection(DB.client, 'task');
+    var task = new DB.Collection(DB.Client, 'task');
 
     task.findOne({_id: _id}, {}, function (err, docs) {
         if (docs !== null) {
@@ -61,7 +61,7 @@ app.post('/add-task-process', function (req, res) {
         return;
     }
 
-    var task = new DB.Collection(DB.client, 'task-process');
+    var task = new DB.Collection(DB.Client, 'task-process');
 
     task.insert(data, {safe: true}, function (err, docs) {
         res.redirect('back');
@@ -72,7 +72,7 @@ app.post('/add-task-process', function (req, res) {
 app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
     var _id = req.params[0];
 
-    var list = new DB.Collection(DB.client, 'task-process');
+    var list = new DB.Collection(DB.Client, 'task-process');
     list.find({task_id: _id}).sort([
             ['time_stamp', -1]
         ]).toArray(function (err, docs) {

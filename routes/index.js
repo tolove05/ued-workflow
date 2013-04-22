@@ -7,7 +7,7 @@ var DB = require('db');
 
 app.get('/', function (req, res) {
 
-    var collection = new DB.Collection(DB.client, 'task');
+    var collection = new DB.Collection(DB.Client, 'task');
 
     collection.find({}, {}).sort([
             ['time_stamp', -1]
@@ -29,3 +29,5 @@ require('./add-user');
 require('./login');
 
 require('./task');
+
+require('./user');

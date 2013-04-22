@@ -17,7 +17,7 @@ app.post('/login', function (req, res) {
     var name = body.name;
     var password = body.password;
 
-    var collection = new DB.Collection(DB.client, 'user');
+    var collection = new DB.Collection(DB.Client, 'user');
 
     collection.findOne({name: name, password: password}, {fields: {_id: 1}}, function (err, docs) {
         if (!err && docs) {
