@@ -70,6 +70,9 @@ app.post('/add-task-process', function (req, res) {
 
 
 app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
+
+    var user = require('user');
+
     var _id = req.params[0];
 
     var list = new DB.Collection(DB.Client, 'task-process');
