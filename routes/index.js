@@ -10,7 +10,7 @@ app.get('/', function (req, res) {
     var collection = new DB.Collection(DB.client, 'task');
 
     collection.find({}, {}).sort([
-            ['time_stamp', 1]
+            ['time_stamp', -1]
         ]).toArray(function (err, docs) {
             res.render('index', {
                 title: 'Express',
@@ -29,4 +29,3 @@ require('./add-user');
 require('./login');
 
 require('./task');
-

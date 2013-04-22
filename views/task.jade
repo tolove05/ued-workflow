@@ -4,7 +4,9 @@ block content
     h1 TASK#{docs.name}
     pre #{html}
     h1 对#{docs.name}发表意见
+    ul#list
     form.form-horizontal(action="/add-task-process",method="post")
+        input(type="hidden",name="_id",value="#{_id}")
         .control-group
             label.control-label 意见
             .controls
@@ -13,3 +15,4 @@ block content
         .control-group
             .controls
                 button.btn.btn-primary(type="submit") 发表意见
+    script(src="/sea.js",data-main="/task/init")
