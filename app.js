@@ -19,6 +19,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
+app.use(express.bodyParser({ keepExtensions: true, uploadDir: path.join(__dirname, 'temp') }));
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 

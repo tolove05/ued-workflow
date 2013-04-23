@@ -34,4 +34,6 @@ app.get('/user/list', function (req, res) {
     }
 });
 
+exports.updateUser = user;
+
 DB.runCb(user);

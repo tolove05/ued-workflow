@@ -1,17 +1,21 @@
 extends layout
-
 block content
+    link(rel="stylesheet",href="/task/task.css")
     h1 TASK#{docs.name}
     pre #{html}
     h1 对#{docs.name}发表意见
     ul#list
-    form.form-horizontal(action="/add-task-process",method="post")
+    form.form-horizontal(action="/add-task-process",method="post",name="add-task-process")
         input(type="hidden",name="_id",value="#{_id}")
         .control-group
             label.control-label 意见
             .controls
                 | 可以拖放图片或任何附件到下方文本框，以便上传。
                 textarea(type="text",name="content",style="height:200px;")
+                input(type="file",name="file")
+                #p
+                #preview-file
+                ul#upload-list
         .control-group
             .controls
                 button.btn.btn-primary(type="submit") 发表意见

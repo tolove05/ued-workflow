@@ -21,4 +21,6 @@ define(function (require, exports, module) {
             $('#list').html(li);
         });
     });
+
+    require('./upload');
 });

@@ -31,6 +31,8 @@ app.post('/add-user', function (req, res) {
     collection.insert(user, {safe: true},
         function () {
             res.end('用户保存成功');
+            //更新用户缓存
+            require('user').updateUser();
         });
 
 });
