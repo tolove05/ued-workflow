@@ -9,9 +9,6 @@
 define(function (exports, require, module) {
 
     var $pic = $(document.forms['add-task-process'].elements['content']);
-    var allowFile = ['jpg', 'jpeg', 'png', 'gif', 'psd'];
-    var $p = $('#p');
-
     var cl;
 
     //拖进
@@ -40,10 +37,7 @@ define(function (exports, require, module) {
         Object.keys(fileList).forEach(function (item) {
             var f = fileList[item];
             if (!f.name) return;
-            var ext = f.name.substring(f.name.lastIndexOf('.') + 1).toLowerCase();
-            if (ext && allowFile.indexOf(ext) > -1) {
-                images.push(f);
-            }
+            images.push(f);
         });
         uploadImg();
     };
@@ -56,8 +50,8 @@ define(function (exports, require, module) {
         var id = 'upload-' + Date.now() + '-' + parseInt(Math.random() * 1000000000, 10);
 
         $('<li id="' + id + '">' +
-             file.name +
-            '<div class="progress progress-striped active">' +
+            file.name +
+            '<div class="progress progress-striped" style="height:32px;">' +
             '<div class="progress-bar" style="width: 0%"></div>' +
             '</div>' +
             '<b class="process"></b>' +
@@ -78,6 +72,7 @@ define(function (exports, require, module) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 $li.addClass('success');
+                $li.find('.progress-bar').addClass('progress-bar-success');
                 $li.data('responseText', xhr.responseText);
             }
         };

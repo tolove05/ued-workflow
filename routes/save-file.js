@@ -24,11 +24,6 @@ exports.saveFile = function (req, res) {
 
     var files = Array.isArray(req.files.file) ? req.files.file : [req.files.file];
 
-    //过滤掉后缀名不正确的文件
-    files = files.filter(function (item) {
-        return allowFile[ path.extname(item.name).substring(1).toLowerCase() ];
-    });
-
     var fileInfo = {};
     //生成一一对应的文件ID
     files = files.map(function (item) {
@@ -38,7 +33,9 @@ exports.saveFile = function (req, res) {
         return item
     });
 
-    res.end(JSON.stringify(fileInfo, undefined, '    '));
+    setTimeout(function () {
+        res.end(JSON.stringify(fileInfo, undefined, '    '));
+    }, 2000);
 
     //存为数组以方便递归处理
     _savePsd(files, req, res);
@@ -60,9 +57,8 @@ function _savePsd(files, req, res) {
 
     function save() {
 
-        console.log('开始保存文件')
-
         if (files.length < 1) {
+            console.log('文件已经全部上传完毕，开始删除临时文件');
             unlink(tempFile);
             return;
         }
@@ -78,59 +74,81 @@ function _savePsd(files, req, res) {
 
         var fileId = cur.fileId;
 
-        //检查是否为有效图片
-        im.identify(['-format', '%wx%hx%m', cur.path + '[0]'], function (err, output) {
-            if (!err) {
+        //如果上传的是图片
+        var extname = path.extname(cur.name).substring(1).toLowerCase();
 
-                output = output.trim().split('x');
+        console.log('文件名为：' + cur.name, '文件扩展名是：' + extname);
 
-                cur.width = parseInt(output[0], 10);
-                cur.height = parseInt(output[1], 10);
-                //文件的真实格式
-                cur.format = output[2].toLowerCase();
-
-                //如果不是允许的类型
-                if (!allowFile[cur.format]) {
-                    save();
-                    return;
-                }
-
-                options.metadata.origin_name = cur.name.substring(0, cur.name.lastIndexOf('.') + 1) + cur.format;
-                options.content_type = allowFile[cur.format];
-
-                options.metadata.width = cur.width;
-                options.metadata.height = cur.height;
-
-                //保存原始文件
-                var gs = new GridStore(DB.dbServer, fileId + '_origin', fileId + '_origin', "w", options);
-                gs.writeFile(cur.path, function (err) {
+        if (allowFile[extname]) {
+            //检查是否为有效图片
+            console.log('检查是否为有效图片');
+            im.identify(['-format', '%wx%hx%m', cur.path + '[0]'], function (err, output) {
                     if (!err) {
-                        convertAndSaveJPG(cur, options, fileId);
+
+                        output = output.trim().split('x');
+
+                        cur.width = parseInt(output[0], 10);
+                        cur.height = parseInt(output[1], 10);
+                        //文件的真实格式
+                        cur.format = output[2].toLowerCase();
+
+                        console.log('有效的图片文件，原是扩展名' + extname, '真实扩展名' + cur.format);
+
+                        options.metadata.origin_name = cur.name.substring(0, cur.name.lastIndexOf('.') + 1) + cur.format;
+                        options.ext_name = cur.format;
+
+                        options.metadata.width = cur.width;
+                        options.metadata.height = cur.height;
+
+                        //保存原始文件
+                        var gs = new GridStore(DB.dbServer, fileId + '_origin', fileId + '_origin', "w", options);
+                        gs.writeFile(cur.path, function (err) {
+                            if (!err) {
+                                convertAndSaveJPG(cur, options, fileId);
+                            } else {
+                                console.log('PSD保存失败');
+                                save();
+                            }
+                        });
                     } else {
-                        console.log('PSD保存失败');
+                        console.log('无效的图片文件', err);
                         save();
                     }
-                });
-            } else {
-                console.log(err);
+                }
+            )
+        } else {
+            //其它格式，直接进行转换
+            console.log('非图片格式，直接进行保存，文件类型是：' + extname);
+            var gs = new GridStore(DB.dbServer, fileId + '_origin', fileId + '_origin', "w", options);
+            gs.writeFile(cur.path, function (err) {
+                if (!err) {
+                    console.log(cur.name + '保存成功');
+                } else {
+                    console.log(cur.name + '保存失败', err);
+                }
                 save();
-            }
-        });
+            });
+        }
     }
 
     function convertAndSaveJPG(cur, options, fileId) {
+        //转换为JPG格式
+        console.log('将' + cur.name + '转换为jpg');
         var jpgPath = path.join(path.dirname(cur.path), fileId + '.jpg');
         options.content_type = 'image/jpeg';
         try {
+
             im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
                 if (!err) {
+                    console.log(cur.name + '已经成功转换为jpg');
                     tempFile.push(jpgPath);
                     var gs = new GridStore(DB.dbServer, fileId, fileId, "w", options);
                     gs.writeFile(jpgPath, function (err) {
                         if (!err) {
+                            console.log(cur.name + '的jpg格式已经入库');
                             cur.path = jpgPath;
                         } else {
-                            console.log('无法保存jpg' + fileId + Date.now());
+                            console.log(cur.name + '无法入库');
                         }
                         save();
                     });
