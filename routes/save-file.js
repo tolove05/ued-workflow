@@ -34,10 +34,6 @@ exports.saveFile = function (req, res) {
     fileInfo.name = files.name;
     fileInfo.path = path.basename(files.path);
 
-    setTimeout(function () {
-        res.end(JSON.stringify(fileInfo, undefined, '    '));
-    }, 2000);
-
     var tempFile = [];
 
     tempFile.push(files.path);
@@ -45,6 +41,11 @@ exports.saveFile = function (req, res) {
     var options = {
         chunk_size: 102400,
         metadata: { }
+    };
+
+    var serverInfo = {
+        files: [],
+        err: []
     };
 
     var fileId = files.fileId;
@@ -68,7 +69,7 @@ exports.saveFile = function (req, res) {
                     //文件的真实格式
                     files.format = output[2].toLowerCase();
 
-                    console.log('有效的图片文件，原是扩展名' + extName, '真实扩展名' + files.format);
+                    console.log('有效的图片文件，原始扩展名' + extName, '真实扩展名' + files.format);
 
                     options.metadata.origin_name = files.name.substring(0, files.name.lastIndexOf('.') + 1) + files.format;
                     options.ext_name = files.format;
@@ -81,13 +82,17 @@ exports.saveFile = function (req, res) {
                     var gs = new GridStore(DB.dbServer, fileName, fileName, "w", options);
                     gs.writeFile(files.path, function (err) {
                         if (!err) {
+                            serverInfo.file = fileName;
                             if (files.format === 'psd') {
                                 convertAndSaveJPG(files, options, fileId);
                             } else {
+                                serverInfo.err.push('无法保存' + files.name);
                                 unlink(tempFile);
+                                end();
                             }
                         } else {
                             unlink(tempFile);
+                            end();
                         }
                     });
                 } else {
@@ -101,16 +106,24 @@ exports.saveFile = function (req, res) {
         saveOriginFile();
     }
 
+    function end() {
+        res.end(JSON.stringify(serverInfo, undefined, '    '));
+    }
+
     function saveOriginFile() {
         console.log('非图片格式，直接进行保存，文件类型是：' + extName);
         options.metadata.origin_name = files.name;
-        var gs = new GridStore(DB.dbServer, fileId + '.' + extName, fileId + '.' + extName, "w", options);
+        var fileName = fileId + '.' + extName;
+        var gs = new GridStore(DB.dbServer, fileName, fileName, "w", options);
         gs.writeFile(files.path, function (err) {
             if (!err) {
                 console.log(files.name + '保存成功');
+                serverInfo.file = fileName;
             } else {
+                serverInfo.err.push(fileName + '无法保存');
                 console.log(files.name + '保存失败', err);
             }
+            end();
             unlink(tempFile);
         });
     }
@@ -120,30 +133,30 @@ exports.saveFile = function (req, res) {
         console.log('将' + cur.name + '转换为jpg');
         var jpgPath = path.join(path.dirname(cur.path), fileId + '.jpg');
         options.content_type = 'image/jpeg';
-        try {
-            im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
-                if (!err) {
-                    console.log(cur.name + '已经成功转换为jpg');
-                    tempFile.push(jpgPath);
-                    var gs = new GridStore(DB.dbServer, fileId, fileId + '.jpg', "w", options);
-                    gs.writeFile(jpgPath, function (err) {
-                        if (!err) {
-                            console.log(cur.name + '的jpg格式已经入库');
-                            cur.path = jpgPath;
-                        } else {
-                            console.log(cur.name + '无法入库');
-                        }
-                        unlink(tempFile);
-                    });
-                } else {
-                    console.log(cur.name + '转换到jpg失败', err);
+        im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
+            if (!err) {
+                console.log(cur.name + '已经成功转换为jpg');
+                tempFile.push(jpgPath);
+                fileId = fileId + '.jpg';
+                var gs = new GridStore(DB.dbServer, fileId, fileId, "w", options);
+                gs.writeFile(jpgPath, function (err) {
+                    if (!err) {
+                        console.log(cur.name + '的jpg格式已经入库');
+                        cur.path = jpgPath;
+                        serverInfo.files.push(fileId)
+                    } else {
+                        serverInfo.err.push('转换的jpg文件无法保存到数据库中');
+                        console.log(cur.name + '无法入库');
+                    }
+                    end();
                     unlink(tempFile);
-                }
-            });
-        } catch (e) {
-            console.log(e);
-            unlink(tempFile);
-        }
+                });
+            } else {
+                console.log(cur.name + '转换到jpg失败', err);
+                unlink(tempFile);
+            }
+        });
+
     }
 }
 
@@ -161,7 +174,11 @@ var allowFile = {
  该方法并不能完全解决问题
  此处应该使用定时程序，来做处理
  */
+
+var i = 0;
+
 function unlink(list) {
+    i++;
     var cur = list.shift();
     fs.unlink(cur, function (err) {
         if (!err) {
