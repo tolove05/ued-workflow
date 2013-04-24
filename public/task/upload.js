@@ -9,7 +9,6 @@
 define(function (exports, require, module) {
 
     var $pic = $(document.forms['add-task-process'].elements['content']);
-    var cl;
 
     //拖进
     $pic.bind('dragenter', function (e) {
@@ -87,10 +86,6 @@ define(function (exports, require, module) {
 
         xhr.send(formData);
 
-        if (cl) {
-            clearTimeout(cl);
-            cl = undefined;
-        }
         if (images.length > 0) uploadImg();
     }
 

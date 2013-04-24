@@ -51,15 +51,16 @@ exports.saveFile = function (req, res) {
 
     //如果上传的是图片
     var extName = path.extname(files.name).substring(1).toLowerCase();
+    if (extName === '') extName = 'unknown';
 
     console.log('文件名为：' + files.name, '文件扩展名是：' + extName);
 
     if (allowFile[extName]) {
         //检查是否为有效图片
-        console.log('检查是否为有效图片');
+        console.log('开始对' + files.name + '文件进行合法性效验');
         im.identify(['-format', '%wx%hx%m', files.path + '[0]'], function (err, output) {
                 if (!err) {
-
+                    console.log(files.name + '通过合法性效验');
                     output = output.trim().split('x');
 
                     files.width = parseInt(output[0], 10);
@@ -76,12 +77,16 @@ exports.saveFile = function (req, res) {
                     options.metadata.height = files.height;
 
                     //保存原始文件
-                    var gs = new GridStore(DB.dbServer, fileId + '_origin', fileId + '_origin', "w", options);
+                    var fileName = fileId + '.' + files.format
+                    var gs = new GridStore(DB.dbServer, fileName, fileName, "w", options);
                     gs.writeFile(files.path, function (err) {
                         if (!err) {
-                            convertAndSaveJPG(files, options, fileId);
+                            if (files.format === 'psd') {
+                                convertAndSaveJPG(files, options, fileId);
+                            } else {
+                                unlink(tempFile);
+                            }
                         } else {
-                            console.log('PSD保存失败');
                             unlink(tempFile);
                         }
                     });
@@ -93,8 +98,13 @@ exports.saveFile = function (req, res) {
         )
     } else {
         //其它格式，直接进行转换
+        saveOriginFile();
+    }
+
+    function saveOriginFile() {
         console.log('非图片格式，直接进行保存，文件类型是：' + extName);
-        var gs = new GridStore(DB.dbServer, fileId + '_origin', fileId + '_origin', "w", options);
+        options.metadata.origin_name = files.name;
+        var gs = new GridStore(DB.dbServer, fileId + '.' + extName, fileId + '.' + extName, "w", options);
         gs.writeFile(files.path, function (err) {
             if (!err) {
                 console.log(files.name + '保存成功');
@@ -111,12 +121,11 @@ exports.saveFile = function (req, res) {
         var jpgPath = path.join(path.dirname(cur.path), fileId + '.jpg');
         options.content_type = 'image/jpeg';
         try {
-
             im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
                 if (!err) {
                     console.log(cur.name + '已经成功转换为jpg');
                     tempFile.push(jpgPath);
-                    var gs = new GridStore(DB.dbServer, fileId, fileId, "w", options);
+                    var gs = new GridStore(DB.dbServer, fileId, fileId + '.jpg', "w", options);
                     gs.writeFile(jpgPath, function (err) {
                         if (!err) {
                             console.log(cur.name + '的jpg格式已经入库');
@@ -144,7 +153,8 @@ var allowFile = {
     'jpeg': 'image/jpg',
     'gif': 'image/gif',
     'png': 'image/png',
-    'psd': 'image/psd'
+    'psd': 'image/psd',
+    'bmp': 'image/bmp'
 };
 
 /*
