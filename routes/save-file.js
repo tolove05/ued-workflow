@@ -16,14 +16,20 @@ var ObjectID = DB.mongodb.ObjectID;
 
 exports.saveFile = function (req, res) {
 
-    res.header('Content-Type', 'text/html;charset=utf-8')
+    res.header('Content-Type', 'text/json;charset=utf-8');
 
     var files = Array.isArray(req.files.file) ? req.files.file : [req.files.file];
+
+    var serverInfo = {
+        files: [],
+        err: []
+    };
 
     //每次只允许上传一个文件，多个文件，请客户端多次发送
     files = files[0];
     if (!files || !files.name) {
-        res.end('您没有选择文件')
+        serverInfo.error.push('没有选择文件');
+        end();
         return;
     }
 
@@ -38,14 +44,16 @@ exports.saveFile = function (req, res) {
 
     tempFile.push(files.path);
 
+
+    if (!require('./login').isLogin(req)) {
+        serverInfo.err.push('请先登陆');
+        end();
+        return;
+    }
+
     var options = {
         chunk_size: 102400,
         metadata: { }
-    };
-
-    var serverInfo = {
-        files: [],
-        err: []
     };
 
     var fileId = files.fileId;
@@ -87,12 +95,10 @@ exports.saveFile = function (req, res) {
                             if (files.format === 'psd') {
                                 convertAndSaveJPG(files, options, fileId, originFileName);
                             } else {
-                                unlink(tempFile);
                                 end();
                             }
                         } else {
                             serverInfo.err.push('无法保存' + files.name);
-                            unlink(tempFile);
                             end();
                         }
                     });
@@ -100,7 +106,6 @@ exports.saveFile = function (req, res) {
                     console.log('无效的图片文件', err);
                     serverInfo.err.push('无效的图片文件');
                     end();
-                    unlink(tempFile);
                 }
             }
         )
@@ -111,6 +116,7 @@ exports.saveFile = function (req, res) {
 
     function end() {
         res.end(JSON.stringify(serverInfo, undefined, '    '));
+        unlink(tempFile);
     }
 
     function saveOriginFile() {
@@ -127,7 +133,6 @@ exports.saveFile = function (req, res) {
                 console.log(files.name + '保存失败', err);
             }
             end();
-            unlink(tempFile);
         });
     }
 
@@ -154,11 +159,10 @@ exports.saveFile = function (req, res) {
                         console.log(cur.name + '无法入库');
                     }
                     end();
-                    unlink(tempFile);
                 });
             } else {
-                console.log(cur.name + '转换到jpg失败', err);
-                unlink(tempFile);
+                serverInfo.err.push('转换到jpg失败');
+                end();
             }
         });
 
