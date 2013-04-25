@@ -20,15 +20,34 @@ exports.saveFile = function (req, res) {
 
     var files = Array.isArray(req.files.file) ? req.files.file : [req.files.file];
 
+    var tempFile = [];
+
+    //虽然本方法每次“只接收”一个文件，但还是必须将文件放入临时文件中，以便操作结束后
+    files.forEach(function (f) {
+        tempFile.push(f.path)
+    });
+
     var serverInfo = {
         files: [],
         err: []
     };
 
-    //每次只允许上传一个文件，多个文件，请客户端多次发送
+    if (!require('./login').isLogin(req)) {
+        serverInfo.err.push('请先登陆');
+        end();
+        return;
+    }
+
+    if (files.length !== 1) {
+        serverInfo.err.push('必须且只能上传1个文件');
+        end();
+        return;
+    }
+
     files = files[0];
-    if (!files || !files.name) {
-        serverInfo.error.push('没有选择文件');
+
+    if (files.size < 1) {
+        serverInfo.err.push('不允许上传0字节文件');
         end();
         return;
     }
@@ -40,16 +59,6 @@ exports.saveFile = function (req, res) {
     fileInfo.name = files.name;
     fileInfo.path = path.basename(files.path);
 
-    var tempFile = [];
-
-    tempFile.push(files.path);
-
-
-    if (!require('./login').isLogin(req)) {
-        serverInfo.err.push('请先登陆');
-        end();
-        return;
-    }
 
     var options = {
         chunk_size: 102400,
@@ -168,7 +177,6 @@ exports.saveFile = function (req, res) {
 
     }
 }
-
 
 var allowFile = {
     'jpg': 'image/jpg',
