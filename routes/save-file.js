@@ -75,28 +75,31 @@ exports.saveFile = function (req, res) {
                     options.ext_name = files.format;
 
                     options.metadata.width = files.width;
+                    options.metadata.owner = req.session._id;
                     options.metadata.height = files.height;
 
                     //保存原始文件
-                    var fileName = fileId + '.' + files.format
-                    var gs = new GridStore(DB.dbServer, fileName, fileName, "w", options);
+                    var originFileName = fileId + '.' + files.format
+                    var gs = new GridStore(DB.dbServer, originFileName, originFileName, "w", options);
                     gs.writeFile(files.path, function (err) {
                         if (!err) {
-                            serverInfo.file = fileName;
+                            serverInfo.file = originFileName;
                             if (files.format === 'psd') {
-                                convertAndSaveJPG(files, options, fileId);
+                                convertAndSaveJPG(files, options, fileId, originFileName);
                             } else {
-                                serverInfo.err.push('无法保存' + files.name);
                                 unlink(tempFile);
                                 end();
                             }
                         } else {
+                            serverInfo.err.push('无法保存' + files.name);
                             unlink(tempFile);
                             end();
                         }
                     });
                 } else {
                     console.log('无效的图片文件', err);
+                    serverInfo.err.push('无效的图片文件');
+                    end();
                     unlink(tempFile);
                 }
             }
@@ -128,11 +131,13 @@ exports.saveFile = function (req, res) {
         });
     }
 
-    function convertAndSaveJPG(cur, options, fileId) {
+    function convertAndSaveJPG(cur, options, fileId, originFileName) {
         //转换为JPG格式
         console.log('将' + cur.name + '转换为jpg');
         var jpgPath = path.join(path.dirname(cur.path), fileId + '.jpg');
         options.content_type = 'image/jpeg';
+        options.metadata.origin_file_id = originFileName;
+        options.metadata.owner = req.session._id;
         im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
             if (!err) {
                 console.log(cur.name + '已经成功转换为jpg');
@@ -175,10 +180,7 @@ var allowFile = {
  此处应该使用定时程序，来做处理
  */
 
-var i = 0;
-
 function unlink(list) {
-    i++;
     var cur = list.shift();
     fs.unlink(cur, function (err) {
         if (!err) {
@@ -191,4 +193,5 @@ function unlink(list) {
 }
 
 var app = require('app');
+
 app.post('/save-file', exports.saveFile);
