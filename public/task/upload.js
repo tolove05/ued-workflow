@@ -80,7 +80,6 @@ define(function (exports, require, module) {
 
         xhr.upload.addEventListener("progress", function (evt) {
             var percent = Math.round(evt.loaded * 100 / evt.total);
-            console.log(percent)
             $li.find('.progress-bar').css('width', percent + '%');
         }, false);
 
@@ -92,6 +91,18 @@ define(function (exports, require, module) {
     //当点击删除时，向服务器发送消息，删除掉上传文件所使用的缓存
     $('#upload-list').on('click', 'li', function (ev) {
         var $li = $(ev.currentTarget);
+    });
+
+    var $uploadFileField = $('#upload-file-field');
+    $uploadFileField.on('change', function (ev) {
+        var files = ev.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            images.push(file)
+        }
+
+        uploadImg();
     });
 
 });
