@@ -9,6 +9,7 @@
 define(function (exports, require, module) {
 
     var $pic = $(document.forms['add-task-process'].elements['content']);
+    var $prviewFile = $('#preview-file');
 
     //拖进
     $pic.bind('dragenter', function (e) {
@@ -73,6 +74,18 @@ define(function (exports, require, module) {
                 $li.addClass('success');
                 $li.find('.progress-bar').addClass('progress-bar-success');
                 $li.data('responseText', xhr.responseText);
+                try {
+                    var serverInfo = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    alert('服务器出错' + xhr.responseText);
+                }
+
+                /*{
+                 "files": [],
+                 "err": [],
+                 "file": "5179dcf64e74483824000d66.jpeg"
+                 }*/
+                insertFile(serverInfo, file.name);
             }
         };
 
@@ -104,5 +117,20 @@ define(function (exports, require, module) {
 
         uploadImg();
     });
+
+    function insertFile(serverInfo, fileName) {
+        var tpl = '';
+        if (serverInfo.file) {
+            tpl = '<div class="file"><div class="file-name">' +
+                '<input type="hidden" name="file" value="' + serverInfo.file + '">' +
+                '' + fileName + '</div></div>';
+        } else {
+            tpl = '<div class="file"><div class="file-name">' +
+                '<span style="color:red;font-weight:bold;">上传失败：' + serverInfo.err.join('，') + '</span>' +
+                fileName + '</div></div>';
+        }
+
+        $prviewFile.append($(tpl));
+    }
 
 });
