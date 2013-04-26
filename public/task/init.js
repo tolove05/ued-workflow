@@ -16,7 +16,14 @@ define(function (require, exports, module) {
         $.getJSON('/task/list/' + id[1], function (data) {
             var li = '';
             $(data.data).each(function (i, item) {
-                li += '<li>' + user[item.user_id] + ',' + item.content + (new Date(item.time_stamp).toLocaleString()) + '</li>';
+
+                li += '<div class="ds-post-main"><div class="ds-avatar">' +
+                    '<a ><img src="http://tp3.sinaimg.cn/1750584642/50/5612846168/1"></a>' +
+                    '</div>' +
+                    '<div class="ds-comment-body">' +
+                    '<a  class="user-name">' + user[item.user_id] + '</a>' + item.content +
+                    (item.files ? item.files.join('<br>') : '') +
+                    '</div></div>'
             })
             $('#list').html(li);
         });

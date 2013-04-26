@@ -1,0 +1,102 @@
+/* comment style */
+.ds-post-main {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: microsoft yahei, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    background: #E5E6D0 url(http://www.shejidaren.com/wp-content/themes/Daren/images/bg.jpg) repeat 0 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a img {
+    border: 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #DE4C1C
+}
+
+.wrapper {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.ds-avatar {
+    z-index: 2;
+    position: absolute;
+    top: 48px;
+    left: -20px;
+    padding: 5px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: -1px 0 1px rgba(0, 0, 0, .15) inset;
+    background: #E5E6D0 url(http://www.shejidaren.com/wp-content/themes/Daren/images/bg.jpg) repeat 0 0;
+}
+
+.ds-avatar a {
+    display: block;
+    padding: 1px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #B9BAA6;
+    border-radius: 50%;
+    background-color: #fff;
+    -moz-transition: color 0.15s linear;
+    -webkit-transition: color 0.15s linear;
+    transition: color 0.15s linear;
+}
+
+.ds-avatar img {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
+    max-width: none;
+}
+
+.ds-comment-body, .ds-avatar, .ds-avatar a,
+.ds-avatar img {
+    -webkit-transition: .4s all ease-in-out;
+    -moz-transition: .4s all ease-in-out;
+    -o-transition: .4s all ease-in-out;
+    -ms-transition: .4s all ease-in-out;
+    transition: .4s all ease-in-out
+}
+
+.ds-post-main:hover .ds-avatar img {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.ds-comment-body {
+    z-index: 1;
+    position: relative;
+    left: 0;
+    background: #F0F0E3;
+    padding: 15px 15px 15px 47px;
+    color: #696A52;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15), 0 1px 0 rgba(255, 255, 255, .75) inset;
+}

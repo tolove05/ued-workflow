@@ -122,7 +122,7 @@ define(function (exports, require, module) {
         var tpl = '';
         if (serverInfo.file) {
             tpl = '<div class="file"><div class="file-name">' +
-                '<input type="hidden" name="file" value="' + serverInfo.file + '">' +
+                '<input type="hidden" name="files" value="' + serverInfo.file + '">' +
                 '' + fileName + '</div></div>';
         } else {
             tpl = '<div class="file"><div class="file-name">' +

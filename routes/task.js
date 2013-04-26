@@ -56,6 +56,10 @@ app.post('/add-task-process', function (req, res) {
         time_stamp: Date.now()
     };
 
+    if (body.files) {
+        data.files = body.files instanceof Array ? body.files : [body.files];
+    }
+
     if (!data.content || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
         res.end('参数错误');
         return;
