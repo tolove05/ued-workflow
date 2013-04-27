@@ -16,10 +16,10 @@ app.get('/', function (req, res) {
                 title: 'Express',
                 name: req.session.name,
                 isLogin: require('./login').isLogin(req),
-                docs: docs
+                docs: docs,
+                user: require('user').user
             });
         });
-
 });
 
 require('./add-task');

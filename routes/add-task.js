@@ -15,39 +15,53 @@ function trans(s) {
 
 app.post('/add-task', function (req, res) {
 
+
     if (!require('./login').isLogin(req)) {
         res.end('请先登录');
         return;
     }
 
     var body = req.body;
+    var user = new DB.Collection(DB.Client, 'user');
+    user.findOne({_id: DB.mongodb.ObjectID(req.session._id)}, function (err, data) {
+        if (err) {
+            res.end('出错');
+            return;
+        }
 
-    var task = {
-        //任务名
-        name: trans(body.name),
-        //设计师
-        stylist: trans(body.stylist),
-        //需求方
-        demand_side: trans(body.demand_side),
-        //小时数
-        timer: trans(body.timer),
-        //备注
-        note: trans(body.note),
-        //上传者
-        user_id: req.session._id,
-        //时间戳
-        time_stamp: Date.now()
-    };
+        if (data && data.group !== '2') {
+            res.end('您没有权限');
+            return;
+        }
 
-    if (!task.name || !task.stylist || !task.demand_side || !task.timer || !task.note) {
-        res.end('参数错误');
-        return;
-    }
+        var task = {
+            //任务名
+            name: trans(body.name),
+            //给谁,记录ObjectId
+            to: trans(body.to),
+            //需求方
+            demand_side: trans(body.demand_side),
+            //小时数
+            timer: trans(body.timer),
+            //备注
+            note: trans(body.note),
+            //谁给的，记录ObjectId
+            from: req.session._id,
+            //时间戳
+            time_stamp: Date.now()
+        };
 
-    var collection = new DB.Collection(DB.Client, 'task');
-    collection.insert(task, {safe: true},
-        function () {
-            res.end('保存成功');
-        });
+        //任务名称，指派者，被指派者必须存在
+        if (!task.name || !task.to || !task.from) {
+            res.end('参数错误');
+            return;
+        }
+
+        var collection = new DB.Collection(DB.Client, 'task');
+        collection.insert(task, {safe: true},
+            function () {
+                res.end('保存成功');
+            });
+    });
 
 });

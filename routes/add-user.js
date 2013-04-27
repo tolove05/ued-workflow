@@ -19,10 +19,11 @@ app.post('/add-user', function (req, res) {
     var user = {
         //任务名
         name: trans(body.name),
-        password: trans(body.password)
+        password: trans(body.password),
+        group: trans(body.group)
     };
 
-    if (!user.name || !user.password) {
+    if (!user.name || !user.password || !user.group) {
         res.end('参数错误');
         return;
     }

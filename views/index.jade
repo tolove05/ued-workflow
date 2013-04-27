@@ -18,7 +18,10 @@ block content
             .control-group
                 label.control-label 设计师
                 .controls
-                    input(type="text",name="stylist")
+                    select(name="to")
+                        -for(var key in user){
+                            option(value="#{key}")=user[key]
+                        -}
             .control-group
                 label.control-label 需求方
                 .controls
@@ -44,6 +47,12 @@ block content
                 label.control-label 密码
                 .controls
                     input(type="password",name="password")
+            .control-group
+                label.control-label 角色
+                .controls
+                    select(name="group")
+                        option(value="1") 用户
+                        option(value="2") 管理员
             .control-group
                 .controls
                     button.btn.btn-primary(type="submit") 添加用户
