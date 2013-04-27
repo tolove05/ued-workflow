@@ -82,18 +82,13 @@ define(function (exports, require, module) {
                 $li.addClass('success');
                 $li.find('.progress-bar').addClass('progress-bar-success');
                 $li.data('responseText', xhr.responseText);
+                var serverInfo = {};
                 try {
                     var serverInfo = JSON.parse(xhr.responseText);
+                    insertFile(serverInfo, file.name);
                 } catch (e) {
-                    alert('服务器出错' + xhr.responseText);
+                    insertFile(serverInfo, file.name);
                 }
-
-                /*{
-                 "files": [],
-                 "err": [],
-                 "file": "5179dcf64e74483824000d66.jpeg"
-                 }*/
-                insertFile(serverInfo, file.name);
             }
         };
 
@@ -128,13 +123,20 @@ define(function (exports, require, module) {
 
     function insertFile(serverInfo, fileName) {
         var tpl = '';
+        console.log(serverInfo)
         if (serverInfo.file) {
             tpl = '<div class="file"><div class="file-name">' +
                 '<input type="hidden" name="files" value="' + serverInfo.file + '">' +
                 '' + fileName + '</div></div>';
         } else {
             tpl = '<div class="file"><div class="file-name">' +
-                '<span style="color:red;font-weight:bold;">上传失败：' + serverInfo.err.join('，') + '</span>' +
+                '<span style="color:red;font-weight:bold;">上传失败：' + (function () {
+                if (serverInfo.err) {
+                    serverInfo.err.join('，')
+                } else {
+                    return '未知错误';
+                }
+            })() + '</span>' +
                 fileName + '</div></div>';
         }
 
