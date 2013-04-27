@@ -14,6 +14,9 @@ var im = require('imagemagick');
 var GridStore = DB.mongodb.GridStore;
 var ObjectID = DB.mongodb.ObjectID;
 
+//最大只允许上传150MB的文件
+var fileSize = 150 * 1024 * 1000;
+
 exports.saveFile = function (req, res) {
 
     res.header('Content-Type', 'text/json;charset=utf-8');
@@ -22,15 +25,23 @@ exports.saveFile = function (req, res) {
 
     var tempFile = [];
 
-    //虽然本方法每次“只接收”一个文件，但还是必须将文件放入临时文件中，以便操作结束后
-    files.forEach(function (f) {
-        tempFile.push(f.path)
-    });
-
     var serverInfo = {
         files: [],
         err: []
     };
+
+    //虽然本方法每次“只接收”一个文件，但expressjs仍然会接收所有文件放入回收站中。
+    files = files.filter(function (f) {
+        if (f.size <= fileSize) {
+            tempFile.push(f.path);
+            return true;
+        } else {
+            //大于fileSize的文件，直接删除
+            fs.unlink(f.path);
+            serverInfo.err.push('不能上传大于' + fileSize + '的文件');
+            return false;
+        }
+    });
 
     if (!require('./login').isLogin(req)) {
         serverInfo.err.push('请先登陆');
@@ -193,6 +204,7 @@ var allowFile = {
  */
 
 function unlink(list) {
+    if (list.length < 1) return;
     var cur = list.shift();
     fs.unlink(cur, function (err) {
         if (!err) {

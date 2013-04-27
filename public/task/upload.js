@@ -42,10 +42,18 @@ define(function (exports, require, module) {
         uploadImg();
     };
 
+    var fileSize = 150 * 1024 * 1000;
+
     function uploadImg() {
 
+        if (images.length < 1) return;
         var file = images.shift();
-        if (!file) return;
+
+        if (file.size > fileSize) {
+            alert('您不能上传大于' + fileSize + '的文件，文件是：' + file.name);
+            uploadImg();
+            return;
+        }
 
         var id = 'upload-' + Date.now() + '-' + parseInt(Math.random() * 1000000000, 10);
 
