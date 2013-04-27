@@ -59,9 +59,6 @@ define(function (exports, require, module) {
 
         $('<li id="' + id + '">' +
             file.name +
-            '<div class="progress progress-striped" style="height:32px;">' +
-            '<div class="progress-bar" style="width: 0%"></div>' +
-            '</div>' +
             '<b class="process"></b>' +
             '<b class="response"></b>' +
             '<button class="btn btn-mini btn-danger" data-action="delete" type="button">删除这个文件</button>' +
@@ -79,8 +76,6 @@ define(function (exports, require, module) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
-                $li.addClass('success');
-                $li.find('.progress-bar').addClass('progress-bar-success');
                 $li.data('responseText', xhr.responseText);
                 var serverInfo = {};
                 try {
@@ -95,8 +90,7 @@ define(function (exports, require, module) {
         xhr.open('post', url);
 
         xhr.upload.addEventListener("progress", function (evt) {
-            var percent = Math.round(evt.loaded * 100 / evt.total);
-            $li.find('.progress-bar').css('width', percent + '%');
+            $li.find('.process').html(Math.round(evt.loaded * 100 / evt.total) + '%');
         }, false);
 
         xhr.send(formData);
