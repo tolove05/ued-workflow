@@ -29,7 +29,7 @@ app.post('/add-task', function (req, res) {
             return;
         }
 
-        if (data && data.group !== '2') {
+        if (data && data.group !== '9') {
             res.end('您没有权限');
             return;
         }
