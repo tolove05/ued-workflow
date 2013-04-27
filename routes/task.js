@@ -81,7 +81,7 @@ app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
 
     var list = new DB.Collection(DB.Client, 'task-process');
     list.find({task_id: _id}).sort([
-            ['time_stamp', -1]
+            ['time_stamp', 1]
         ]).toArray(function (err, docs) {
             res.end(JSON.stringify({data: docs}, undefined, '    '))
         });

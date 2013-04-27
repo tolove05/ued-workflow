@@ -45,7 +45,7 @@ a:hover {
 .ds-avatar {
     z-index: 2;
     position: absolute;
-    top: 48px;
+    top: 4px;
     left: -20px;
     padding: 5px;
     width: 36px;
