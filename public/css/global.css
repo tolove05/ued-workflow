@@ -1,0 +1,22 @@
+#control {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 999999;
+}
+
+#container {
+    position: absolute;
+    height: 2010px;
+    top: 0;
+    left: 220px;
+    right: 0;
+}
+
+#sidebar div[data-toggle=buttons-radio] {
+    width: 210px;
+}
+
+#sidebar div[data-toggle=buttons-radio] button {
+    width: 50%;
+}

@@ -29,5 +29,10 @@ define(function (require, exports, module) {
         });
     });
 
-    require('./upload');
+    //require('./upload');
+
+    require('./sidebar-init');
+
+    require('./show-task-process');
+
 });

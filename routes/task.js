@@ -77,7 +77,7 @@ app.post('/add-task-process', function (req, res) {
 });
 
 
-app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
+app.get(/^\/task\/process\/([a-z0-9]{24})$/, function (req, res) {
 
     res.header('content-type', 'application/json;charset=utf-8');
 
@@ -93,3 +93,25 @@ app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
         });
 
 });
+
+
+app.get(/^\/task\/list/, function (req, res) {
+
+
+    res.header('content-type', 'application/json;charset=utf-8');
+
+    var user = require('user');
+
+    var list = new DB.Collection(DB.Client, 'task');
+    list.find({}).sort([
+            ['time_stamp', 1]
+        ]).toArray(function (err, docs) {
+            if (req.query.callback) {
+                res.end(req.query.callback + '(' + JSON.stringify({data: docs}, undefined, '    ') + ');')
+            } else {
+                res.end(JSON.stringify({data: docs}, undefined, '    '))
+            }
+        });
+
+});
+

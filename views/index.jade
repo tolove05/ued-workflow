@@ -1,54 +1,18 @@
 extends layout
 
 block content
-    h1 Add Task
 
-    ul
-        -docs.forEach(function(item){
-            li
-                a(href="/task/#{item._id}")=item.name
-        -})
+    #sidebar
+        .btn-group(data-toggle="buttons-radio")
+            button(type="button").active.btn.btn-primary 进行中
+            button(type="button").btn.btn-primary 已结束
 
-    #container(style="width:500px;")
-        form.form-horizontal(action="/add-task",method="post")
-                    input(type="text",name="name",placeholder="任务名称")
-                    select(name="to")
-                        -for(var key in user){
-                            option(value="#{key}")=user[key]
-                        -}
-                    input(type="text",name="demand_side",placeholder="需求方")
-                    input(type="text",name="timer",placeholder="小时数")
-            .control-group
-                label.control-label 备注
-                .controls
-                    input(type="text",name="note")
-            .control-group
-                .controls
-                    button.btn.btn-primary(type="submit") 增加任务
-        h1 Add User
-        form.form-horizontal(action="/add-user",method="post")
-            .control-group
-                label.control-label 用户名
-                .controls
-                    input(type="text",name="name")
-            .control-group
-                label.control-label 密码
-                .controls
-                    input(type="password",name="password")
-            .control-group
-                label.control-label 角色
-                .controls
-                    select(name="group")
-                        option(value="1") 用户
-                        option(value="9") 管理员
-            .control-group
-                .controls
-                    button.btn.btn-primary(type="submit") 添加用户
-        h1 Login
-        -if(isLogin)
-            a(href="/login-out") welcome:#{name}  Login out
-        -else
-            form.form-horizontal(action="/login",method="post")
+        ul(style="margin-top:1em;margin-bottom:1em;")
+
+    #add-user.modal.fade
+        .modal-header
+        .modal-body
+            form.form-horizontal(action="/add-user",method="post")
                 .control-group
                     label.control-label 用户名
                     .controls
@@ -58,7 +22,67 @@ block content
                     .controls
                         input(type="password",name="password")
                 .control-group
+                    label.control-label 角色
                     .controls
-                        button.btn.btn-primary(type="submit") 登陆
+                        select(name="group")
+                            option(value="1") 用户
+                            option(value="9") 管理员
+                .control-group
+                    .controls
+                        button.btn.btn-primary(type="submit") 添加用户
+    #control
+        a(data-toggle="modal",href="#login").btn.btn-primary.btn-large 登陆
+        a(data-toggle="modal",href="#add-task").btn.btn-primary.btn-large 添加任务
+    form#login.modal.hide.form-horizontal(action="/login",method="post")
+        .modal-header
+            button(type="button",data-dismiss="modal",aria-hidden="true").close &times;
+            h3 登陆
+        .modal-body
+            -if(isLogin)
+                a(href="/login-out") welcome:#{name}  Login out
+            -else
+                .control-group
+                    label.control-label 用户名
+                    .controls
+                        input(type="text",name="name")
+                .control-group
+                    label.control-label 密码
+                    .controls
+                        input(type="password",name="password")
+        .modal-footer
+            a.btn(data-dismiss="modal",aria-hidden="true") 取消
+            input.btn.btn-primary(type="submit",value="保存")
 
-
+    form#add-task.modal.hide.form-horizontal(action="/add-task",method="post")
+        .modal-header
+            button(type="button",data-dismiss="modal",aria-hidden="true").close &times;
+            h3 增加新任务
+        .modal-body
+            .control-group
+                label.control-label 任务名称
+                .controls
+                    input(type="text",name="name",placeholder="任务名称")
+            .control-group
+                label.control-label 设计师
+                .controls
+                    select(name="to")
+                        -for(var key in user){
+                            option(value="#{key}")=user[key]
+                        -}
+            .control-group
+                label.control-label 需求方
+                .controls
+                    input(type="text",name="demand_side",placeholder="需求方")
+            .control-group
+                label.control-label 设计师
+                .controls
+                    input(type="text",name="timer",placeholder="小时数")
+            .control-group
+                label.control-label 备注
+                .controls
+                    input(type="text",name="note")
+        .modal-footer
+            button.btn.btn-primary(type="submit") 增加任务
+    #container
+        h4.task-title 活动页面案例暗访
+        #content
