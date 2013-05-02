@@ -11,25 +11,13 @@ block content
 
     #container(style="width:500px;")
         form.form-horizontal(action="/add-task",method="post")
-            .control-group
-                label.control-label 任务名
-                .controls
-                    input(type="text",name="name")
-            .control-group
-                label.control-label 设计师
-                .controls
+                    input(type="text",name="name",placeholder="任务名称")
                     select(name="to")
                         -for(var key in user){
                             option(value="#{key}")=user[key]
                         -}
-            .control-group
-                label.control-label 需求方
-                .controls
-                    input(type="text",name="demand_side")
-            .control-group
-                label.control-label 小时数
-                .controls
-                    input(type="text",name="timer")
+                    input(type="text",name="demand_side",placeholder="需求方")
+                    input(type="text",name="timer",placeholder="小时数")
             .control-group
                 label.control-label 备注
                 .controls

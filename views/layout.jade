@@ -3,26 +3,14 @@ html
     head
         title= title
         meta(name="viewport",content="width=device-width,initial-scale=1.0")
-        link(rel='stylesheet', href='/flat-ui/css/bootstrap.css')
+        link(rel='stylesheet', href='/reset.css')
+        link(rel='stylesheet', href='/global.css')
     body
-        .navbar.navbar-inverse
-            .navbar-inner
-                .container
-                    button.btn.btn-navbar(type="button",data-toggle="collapse",data-target=".nav-collapse")
-                        span.icon-bar
-                        span.icon-bar
-                        span.icon-bar
-                    .nav-collapse.collapse
-                        .nav
-                            li
-                                a(href="#") 首页
-                                    span.navbar-unread 1
-                            li.active
-                                a(href="#") 添加任务
-                                    span.navbar-unread 99
-                            li
-                                a(href="#") 我的任务
-
+        #header
+            a(href="/") Home
+            a(href="/") Home
+            a(href="/") Home
+            a(href="/") Home
+            a(href="/") Home
         block content
-
         script(src="/jquery-2.0.0.min.js")

@@ -12,6 +12,8 @@ var DB = require('db');
 
 app.get(/^\/task\/([a-z0-9]{24})$/, function (req, res) {
 
+    res.header('content-type', 'text/html;charset=utf-8');
+
     try {
         var _id = DB.mongodb.ObjectID(req.params[0]);
     } catch (e) {
@@ -45,6 +47,8 @@ function trim(s) {
 
 app.post('/add-task-process', function (req, res) {
 
+    res.header('content-type', 'text/html;charset=utf-8');
+
     var body = req.body;
     var data = {
         //任务意见
@@ -74,6 +78,8 @@ app.post('/add-task-process', function (req, res) {
 
 
 app.get(/^\/task\/list\/([a-z0-9]{24})$/, function (req, res) {
+
+    res.header('content-type', 'application/json;charset=utf-8');
 
     var user = require('user');
 

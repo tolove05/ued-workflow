@@ -15,6 +15,7 @@ function trans(s) {
 
 app.post('/add-task', function (req, res) {
 
+    res.header('content-type', 'text/plain;charset=utf-8');
 
     if (!require('./login').isLogin(req)) {
         res.end('请先登录');

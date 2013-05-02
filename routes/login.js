@@ -14,6 +14,8 @@ app.post('/login', function (req, res) {
 
     var body = req.body;
 
+    res.header('content-type', 'text/plain;charset=utf-8');
+
     var name = body.name;
     var password = body.password;
 

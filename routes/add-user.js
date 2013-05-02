@@ -14,6 +14,8 @@ function trans(s) {
 
 app.post('/add-user', function (req, res) {
 
+    res.header('content-type', 'text/plain;charset=utf-8');
+
     var body = req.body;
 
     var user = {
