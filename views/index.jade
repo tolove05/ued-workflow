@@ -33,7 +33,7 @@ block content
     #control
         a(data-toggle="modal",href="#login").btn.btn-primary.btn-large 登陆
         a(data-toggle="modal",href="#add-task").btn.btn-primary.btn-large 添加任务
-    form#login.modal.hide.form-horizontal(action="/login",method="post")
+    form#login.modal.hide(action="/login",method="post")
         .modal-header
             button(type="button",data-dismiss="modal",aria-hidden="true").close &times;
             h3 登陆
@@ -84,5 +84,18 @@ block content
         .modal-footer
             button.btn.btn-primary(type="submit") 增加任务
     #container
-        h4.task-title 活动页面案例暗访
+        h4.task-title 选择左侧对应的任务以查看详情
         #content
+        form(action="/add-task-process",method="post",name="add-task-process")
+            input#add-task-process-id(type="hidden",name="_id",value="")
+            .control-group
+                .controls
+                    textarea(type="text",name="content",style="height:180px;width:90%")
+                .controls
+                    input#upload-file-field(type="file",multiple="multiple")
+                #p
+                #preview-file
+                #upload-list
+            .control-group
+                .controls
+                    button.btn.btn-primary(type="submit") 发表意见

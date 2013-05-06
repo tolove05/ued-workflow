@@ -14,24 +14,19 @@ define(function (require, exports, module) {
         showProcess(JSON.parse(data));
     });
 
-    var template = require('../template');
+    var template = require('template/template/1.0.0/template');
+
+    var user = require('user/list?callback=define');
 
     var tpl = require('/task-process-tpl.html#');
 
-    alert(tpl)
-
     function showProcess(data) {
         $('#container .task-title').html(data.name);
+        $('#add-task-process-id').val(data._id);
         $.getJSON('/task/process/' + data._id, function (res) {
-
-            var dl = '';
-            for (var i = 0; i < res.data.length; i++) {
-                var item = res.data[i];
-
-            }
-
+            var html = template(tpl, {data: res.data, user: user});
+            $('#content').html(html)
         })
     }
-
 });
 

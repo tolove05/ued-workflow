@@ -24,6 +24,7 @@ app.use(express.bodyParser({ keepExtensions: true, /* maxFieldsSize: 10,*/ uploa
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
