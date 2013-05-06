@@ -18,7 +18,7 @@ define(function (require, exports, module) {
             $(data.data).each(function (i, item) {
 
                 li += '<div class="ds-post-main"><div class="ds-avatar">' +
-                    '<a ><img src="http://tp3.sinaimg.cn/1750584642/50/5612846168/1"></a>' +
+                    '<a><img src="http://tp3.sinaimg.cn/1750584642/50/5612846168/1"></a>' +
                     '</div>' +
                     '<div class="ds-comment-body">' +
                     '<a  class="user-name">' + user[item.user_id] + '</a>' + item.content +
@@ -29,10 +29,10 @@ define(function (require, exports, module) {
         });
     });
 
-    require('./upload');
+    require('/task/upload');
 
-    require('./sidebar-init');
+    require('/task/sidebar-init');
 
-    require('./show-task-process');
+    require('/task/show-task-process');
 
 });
