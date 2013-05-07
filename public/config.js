@@ -9,7 +9,8 @@
 seajs.config({
     plugins: ['text'],
     alias: {
-        template: '/sea-modules/template/template/1.0.0/template'
+        template: '/sea-modules/template/template/1.0.0/template-debug',
+        sha: '/crypto/sha'
     },
     preload: ['template']
 });

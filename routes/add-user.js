@@ -21,16 +21,22 @@ app.post('/add-user', function (req, res) {
     var user = {
         //任务名
         name: trans(body.name),
-        password: trans(body.password),
+        pwd: trans(body.pwd),
         group: trans(body.group)
     };
 
-    if (!user.name || !user.password || !user.group) {
+    if (!user.name || !user.pwd || !user.group) {
         res.end('参数错误');
         return;
     }
 
     var collection = new DB.Collection(DB.Client, 'user');
+
+    var crypto = require('crypto');
+    var shasum = crypto.createHash('sha512');
+    shasum.update(user.pwd);
+    user.pwd = shasum.digest('hex');
+
     collection.insert(user, {safe: true},
         function () {
             res.end('用户保存成功');

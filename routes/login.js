@@ -17,11 +17,11 @@ app.post('/login', function (req, res) {
     res.header('content-type', 'text/plain;charset=utf-8');
 
     var name = body.name;
-    var password = body.password;
+    var pwd = body.pwd;
 
     var collection = new DB.Collection(DB.Client, 'user');
 
-    collection.findOne({name: name, password: password}, {fields: {_id: 1}}, function (err, docs) {
+    collection.findOne({name: name, pwd: pwd}, {fields: {_id: 1}}, function (err, docs) {
         if (!err && docs) {
             req.session.name = name;
             req.session._id = docs._id.toString();
@@ -34,7 +34,7 @@ app.post('/login', function (req, res) {
 
 exports.isLogin = function (req) {
     if (req.session._id) {
-        return  req.session._id !== undefined;
+        return  req.session._id !== 'undefined';
     } else {
         return false;
     }

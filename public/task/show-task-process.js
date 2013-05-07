@@ -14,7 +14,7 @@ define(function (require, exports, module) {
         showProcess(JSON.parse(data));
     });
 
-    var template = require('template/template/1.0.0/template');
+    var template = require('template/template/1.0.0/template-debug');
 
     var user = require('user/list?callback=define');
 
@@ -27,6 +27,7 @@ define(function (require, exports, module) {
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html)
         })
+
     }
 });
 

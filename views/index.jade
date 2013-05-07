@@ -20,7 +20,7 @@ block content
                 .control-group
                     label.control-label 密码
                     .controls
-                        input(type="password",name="password")
+                        input(type="password",name="pwd")
                 .control-group
                     label.control-label 角色
                     .controls
@@ -31,58 +31,8 @@ block content
                     .controls
                         button.btn.btn-primary(type="submit") 添加用户
     #control
-        a(data-toggle="modal",href="#login").btn.btn-primary.btn-large 登陆
-        a(data-toggle="modal",href="#add-task").btn.btn-primary.btn-large 添加任务
-    form#login.modal.hide(action="/login",method="post")
-        .modal-header
-            button(type="button",data-dismiss="modal",aria-hidden="true").close &times;
-            h3 登陆
-        .modal-body
-            -if(isLogin)
-                a(href="/login-out") welcome:#{name}  Login out
-            -else
-                .control-group
-                    label.control-label 用户名
-                    .controls
-                        input(type="text",name="name")
-                .control-group
-                    label.control-label 密码
-                    .controls
-                        input(type="password",name="password")
-        .modal-footer
-            a.btn(data-dismiss="modal",aria-hidden="true") 取消
-            input.btn.btn-primary(type="submit",value="保存")
-
-    form#add-task.modal.hide.form-horizontal(action="/add-task",method="post")
-        .modal-header
-            button(type="button",data-dismiss="modal",aria-hidden="true").close &times;
-            h3 增加新任务
-        .modal-body
-            .control-group
-                label.control-label 任务名称
-                .controls
-                    input(type="text",name="name",placeholder="任务名称")
-            .control-group
-                label.control-label 设计师
-                .controls
-                    select(name="to")
-                        -for(var key in user){
-                            option(value="#{key}")=user[key]
-                        -}
-            .control-group
-                label.control-label 需求方
-                .controls
-                    input(type="text",name="demand_side",placeholder="需求方")
-            .control-group
-                label.control-label 设计师
-                .controls
-                    input(type="text",name="timer",placeholder="小时数")
-            .control-group
-                label.control-label 备注
-                .controls
-                    input(type="text",name="note")
-        .modal-footer
-            button.btn.btn-primary(type="submit") 增加任务
+        a.login 登陆
+        a.add-task 添加任务
     #container
         h4.task-title 选择左侧对应的任务以查看详情
         #content

@@ -1,1 +1,88 @@
-body
+body {
+    color: #333;
+}
+
+.ks-overlay {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+}
+
+.ks-overlay-hidden {
+    visibility: hidden;
+}
+
+.ks-overlay-mask-hidden {
+    display: none;
+}
+
+.ks-overlay-shown {
+    visibility: visible;
+}
+
+.ks-overlay-mask-shown {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.ks-dialog {
+    background: #fff;
+    padding: .8em;
+    border: solid 1px #1abc9c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+.ks-dialog a.ks-ext-close {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+    text-decoration: none;
+    color: #1abc9c;
+}
+
+.ks-dialog .ks-stdmod-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0 12px 0;
+    font-size: 22px;
+}
+
+table {
+    width: 100%;
+}
+
+table th, table td {
+    padding: .5em;
+}
+
+#login th {
+    text-align: right;
+}
+
+input[type=text], input[type=password] {
+    border: 1px solid #dce4ec;
+    color: #34495e;
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    padding: 8px 0 9px 10px;
+    text-indent: 1px;
+    box-shadow: none;
+    outline: none;
+    border-radius: 2px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border-color: #1abc9c;
+}
+
+.btn {
+    border: none;
+    background: #167d64;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 2px;
+}
