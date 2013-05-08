@@ -6,13 +6,7 @@
         </tr>
         <tr>
             <th>选择用户</th>
-            <td><select name="to">
-                #js
-                for(var k in user){
-                echo ('<'+'option value="'+k+'">'+user[k]+'</option>')
-                }
-                #end
-            </select></td>
+            <td><input type="text" name="to"></td>
         </tr>
         <tr>
             <th>需求方</th>

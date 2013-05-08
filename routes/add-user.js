@@ -25,17 +25,13 @@ app.post('/add-user', function (req, res) {
         group: trans(body.group)
     };
 
-    if (!user.name || !user.pwd || !user.group) {
+    //密码必须是一个SHA512 (128长度) 的值，请在客户端效验好后再传送
+    if (!user.name || !user.pwd || !user.group || !/^[a-z0-9]{128}$/.test(user.pwd)) {
         res.end('参数错误');
         return;
     }
 
     var collection = new DB.Collection(DB.Client, 'user');
-
-    var crypto = require('crypto');
-    var shasum = crypto.createHash('sha512');
-    shasum.update(user.pwd);
-    user.pwd = shasum.digest('hex');
 
     collection.insert(user, {safe: true},
         function () {
@@ -45,3 +41,4 @@ app.post('/add-user', function (req, res) {
         });
 
 });
+

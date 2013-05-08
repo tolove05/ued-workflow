@@ -1,20 +1,21 @@
 /**
  * Created with JetBrains WebStorm.
  * User: 松松
- * Date: 13-5-6
- * Time: 下午1:35
+ * Date: 13-5-7
+ * Time: 下午5:10
  * To change this template use File | Settings | File Templates.
  */
 define(function (require, exports, module) {
 
-    var tpl = require('./add-task.tpl');
+    var tpl = require('./add-user.tpl');
 
-    function add_task(cb) {
+    var template
+
+    function login(cb) {
         KISSY.use("overlay", function (S, O) {
-
             var dialog = new O.Dialog({
                 width: 400,
-                headerContent: '添加新任务',
+                headerContent: '添加用户',
                 bodyContent: tpl,
                 mask: true,
                 zIndex: 9999,
@@ -34,7 +35,7 @@ define(function (require, exports, module) {
             exports.dialog.show();
             exports.dialog.center();
         } else {
-            add_task(function () {
+            login(function () {
                 exports.dialog.show();
                 exports.dialog.center();
             })
@@ -45,14 +46,21 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.add-task', function () {
+    $(document).on('click', '.add-user', function () {
         show();
-    })
+    });
 
-
-    $(document).on('click', 'input.J-add-task', function () {
+    $(document).on('click', 'input.J-add-user', function () {
         var form = this.form;
-        $.post("/add-task", $(form).serialize());
+        var name = form.elements.name.value;
+        var sha = require('sha');
+        var group = form.elements.group.value;
+        var pwd = sha.hex_sha512(form.elements.pwd.value);
+        $.post('/add-user', {
+            name: name,
+            pwd: pwd,
+            group: group
+        })
     });
 
 });

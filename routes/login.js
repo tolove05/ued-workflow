@@ -9,7 +9,6 @@
 var app = require('app');
 var DB = require('db');
 
-
 app.post('/login', function (req, res) {
 
     var body = req.body;
@@ -25,9 +24,9 @@ app.post('/login', function (req, res) {
         if (!err && docs) {
             req.session.name = name;
             req.session._id = docs._id.toString();
-            res.redirect('/');
+            res.end(JSON.stringify({_id: docs._id, name: require('user').user[docs._id]}));
         } else {
-            res.end('未找到用户');
+            res.end('{}');
         }
     });
 });
@@ -41,10 +40,16 @@ exports.isLogin = function (req) {
 };
 
 //登出
-exports.log_out = function (req, res) {
+app.get('/login-out', function (req, res) {
     req.session.destroy();
-    res.redirect('/');
-};
+    res.end();
+});
 
-
-app.get('/login-out', exports.log_out);
+//检测是否登陆
+app.get('/check-login', function (req, res) {
+    if (exports.isLogin(req)) {
+        res.end(JSON.stringify({_id: req.session._id, name: require('user').user[req.session._id]}));
+    } else {
+        res.end('{}');
+    }
+});

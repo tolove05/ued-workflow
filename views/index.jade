@@ -2,37 +2,12 @@ extends layout
 
 block content
 
-    #sidebar
-        .btn-group(data-toggle="buttons-radio")
-            button(type="button").active.btn.btn-primary 进行中
-            button(type="button").btn.btn-primary 已结束
-
-        ul(style="margin-top:1em;margin-bottom:1em;")
-
-    #add-user.modal.fade
-        .modal-header
-        .modal-body
-            form.form-horizontal(action="/add-user",method="post")
-                .control-group
-                    label.control-label 用户名
-                    .controls
-                        input(type="text",name="name")
-                .control-group
-                    label.control-label 密码
-                    .controls
-                        input(type="password",name="pwd")
-                .control-group
-                    label.control-label 角色
-                    .controls
-                        select(name="group")
-                            option(value="1") 用户
-                            option(value="9") 管理员
-                .control-group
-                    .controls
-                        button.btn.btn-primary(type="submit") 添加用户
     #control
-        a.login 登陆
-        a.add-task 添加任务
+
+
+    #sidebar
+        ul
+
     #container
         h4.task-title 选择左侧对应的任务以查看详情
         #content
@@ -46,6 +21,4 @@ block content
                 #p
                 #preview-file
                 #upload-list
-            .control-group
-                .controls
-                    button.btn.btn-primary(type="submit") 发表意见
+                button.btn.btn-primary(type="submit") 发表意见

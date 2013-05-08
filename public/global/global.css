@@ -63,6 +63,10 @@ table th, table td {
     text-align: right;
 }
 
+.ks-overlay-mask-shown {
+    background: rgba(255, 255, 255, .5);
+}
+
 input[type=text], input[type=password] {
     border: 1px solid #dce4ec;
     color: #34495e;
@@ -85,4 +89,53 @@ input[type=text]:focus, input[type=password]:focus {
     color: #fff;
     padding: 8px 12px;
     border-radius: 2px;
+}
+
+#control {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+#control a {
+    color: #fff;
+    font-size: 12px;
+    display: inline-block;
+    padding: 4px 12px;
+    margin: 0 0 0 1em;
+    background: #1a2d33;
+    cursor: pointer;
+}
+
+#container {
+    margin-left: 220px;
+    margin-top: 30px
+}
+
+#sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px;
+    border-right: dotted 1px #eee;
+    font-family: "Microsoft Yahei", sans-serif;
+    font-size: 12px;
+}
+
+#sidebar li {
+    height: 30px;
+    background: #0b97c4;
+    color: #fff;
+    line-height: 30px;
+    border-bottom: dotted 1px #353855;
+    padding-left: 12px;
+}
+
+#sidebar li:last-child {
+    border-bottom: none;
+}
+
+#sidebar li:hover {
+    background: #0B7298;
 }
