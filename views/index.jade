@@ -13,12 +13,10 @@ block content
         #content
         form(action="/add-task-process",method="post",name="add-task-process")
             input#add-task-process-id(type="hidden",name="_id",value="")
-            .control-group
-                .controls
-                    textarea(type="text",name="content",style="height:180px;width:90%")
-                .controls
-                    input#upload-file-field(type="file",multiple="multiple")
-                #p
-                #preview-file
-                #upload-list
-                button.btn.btn-primary(type="submit") 发表意见
+            textarea(type="text",name="content")
+            label(for="upload-file-field") 插入附件
+            input#upload-file-field(type="file",multiple="multiple")
+            #p
+            #preview-file
+            #upload-list
+            button.btn.btn-primary(type="submit") 发表意见

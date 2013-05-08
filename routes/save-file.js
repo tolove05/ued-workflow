@@ -82,6 +82,8 @@ exports.saveFile = function (req, res) {
     var extName = path.extname(files.name).substring(1).toLowerCase();
     if (extName === '') extName = 'unknown';
 
+    serverInfo.origin_name = files.name;
+
     console.log('文件名为：' + files.name, '文件扩展名是：' + extName);
 
     if (allowFile[extName]) {

@@ -117,10 +117,9 @@ define(function (exports, require, module) {
 
     function insertFile(serverInfo, fileName) {
         var tpl = '';
-        console.log(serverInfo)
         if (serverInfo.file) {
             tpl = '<div class="file"><div class="file-name">' +
-                '<input type="hidden" name="files" value="' + serverInfo.file + '">' +
+                '<input type="hidden" name="files" value="' + serverInfo.file + '/' + serverInfo.origin_name + '">' +
                 '' + fileName + '</div></div>';
         } else {
             tpl = '<div class="file"><div class="file-name">' +

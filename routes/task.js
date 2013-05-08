@@ -60,6 +60,8 @@ app.post('/add-task-process', function (req, res) {
         time_stamp: Date.now()
     };
 
+    console.log(body.files)
+
     if (body.files) {
         data.files = body.files instanceof Array ? body.files : [body.files];
     }

@@ -46,7 +46,7 @@ app.post('/add-task', function (req, res) {
             timer: trans(body.timer),
             //备注
             note: trans(body.note),
-            //谁给的，记录ObjectId
+            //派发者，记录ObjectId
             from: req.session._id,
             //时间戳
             time_stamp: Date.now()
