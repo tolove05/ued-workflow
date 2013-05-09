@@ -47,7 +47,12 @@ function trim(s) {
 
 app.post('/add-task-process', function (req, res) {
 
-    res.header('content-type', 'text/html;charset=utf-8');
+    res.header('content-type', 'application/json;charset=utf-8');
+
+    if (!req.session._id) {
+        res.end('{"status":0,"msg":"需要登陆才能完成此操作"}');
+        return;
+    }
 
     var body = req.body;
     var data = {
@@ -60,22 +65,25 @@ app.post('/add-task-process', function (req, res) {
         time_stamp: Date.now()
     };
 
-    console.log(body.files)
-
     if (body.files) {
         data.files = body.files instanceof Array ? body.files : [body.files];
     }
 
     if (!data.content || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
-        res.end('参数错误');
+        res.end('{"status":-1,"msg":"参数验证不通过"}');
         return;
     }
 
     var task = new DB.Collection(DB.Client, 'task-process');
 
     task.insert(data, {safe: true}, function (err, docs) {
-        res.redirect('back');
+        if (!err && docs) {
+            res.end(JSON.stringify({status: 1, docs: docs[0]}));
+        } else {
+            res.end(JSON.stringify({status: -2, msg: err}));
+        }
     });
+
 });
 
 

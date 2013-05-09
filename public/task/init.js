@@ -37,4 +37,6 @@ define(function (require, exports, module) {
 
     require('./add-task');
 
+    require('./add-multiple-task');
+
 });

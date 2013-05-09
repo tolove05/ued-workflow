@@ -8,7 +8,7 @@
 
 define(function (require, exports, module) {
 
-    $('#sidebar').on('click', 'li', function (ev) {
+    $('#sidebar').on('mousedown', 'li', function (ev) {
         var data = ev.currentTarget.getAttribute('data-json');
         if (!data) return;
         showProcess(JSON.parse(data));
@@ -29,5 +29,8 @@ define(function (require, exports, module) {
         })
 
     }
+
+    exports.showProcess = showProcess;
+
 });
 
