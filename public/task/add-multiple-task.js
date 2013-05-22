@@ -90,8 +90,19 @@ define(function (require, exports, module) {
                         return arr;
                     })();
 
-                    exports.dialog.set('bodyContent', template(tpl, {step: 3, data: excelData, cell: cell, fieldsArray: fieldsArray}));
 
+                    var _data = new Array(excelData.length);
+                    excelData.forEach(function (item, i) {
+                        fieldsArray.forEach(function (fields, j) {
+                            if (!_data[i]) {
+                                _data[i] = [];
+                            }
+                            _data[i].push(excelData[i][cell[fields]]);
+                        })
+                    });
+
+
+                    exports.dialog.set('bodyContent', template(tpl, {step: 3, data: _data, cell: cell, fieldsArray: fieldsArray}));
                 } else {
                     alert('请先选择好所有的字段')
                 }

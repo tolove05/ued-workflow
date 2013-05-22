@@ -47,21 +47,11 @@
             </tr>
             #each(row in data)
             <tr>
+                #each(_row in row)
                 <td>
-                    <div class="wrapper">#{row[cell["设计师"]]}</div>
+                    <div class="wrapper">#{_row}</div>
                 </td>
-                <td>
-                    <div class="wrapper">#{row[cell["任务名"]]}</div>
-                </td>
-                <td>
-                    <div class="wrapper">#{row[cell["需求方"]]}</div>
-                </td>
-                <td>
-                    <div class="wrapper">#{row[cell["任务时长"]]}</div>
-                </td>
-                <td>
-                    <div class="wrapper">#{row[cell["任务类型"]]}</div>
-                </td>
+                #end
             </tr>
             #end
         </table>
