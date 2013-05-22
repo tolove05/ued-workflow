@@ -7,8 +7,20 @@
  */
 define(function (require, exports, module) {
 
+    require('./add-multiple-task.css');
+
     var tpl = require('./add-multiple-task.tpl');
+
     var template = require('template/template/1.0.0/template-debug');
+
+    //存放第一步的Excel的数据
+    var textareaValue = '';
+
+    //缓存准备好了的数据
+    var excelData = [];
+
+    //存放必备的字段名称
+    var fieldsArray = ['设计师', '任务名', '需求方', '任务时长', '任务类型'];
 
     function add_task(cb) {
         KISSY.use("overlay", function (S, O) {
@@ -47,30 +59,129 @@ define(function (require, exports, module) {
 
     $(document).on('click', '.add-multiple-task', function () {
         show();
-    })
-
+    });
 
     $(document).on('click', '.J-add-multiple-task', function (ev) {
+            var $target = $(ev.currentTarget);
+            var form = ev.target.form;
+
+            //进入第二步
+            if ($target.attr('data-step') === '2' && $target.hasClass('J-next')) {
+                textareaValue = form.elements['excel-data'].value;
+                transExcelData(textareaValue);
+            }
+
+            //从第二步返回到第一步
+            if ($target.attr('data-step') === '1' && $target.hasClass('J-go-back')) {
+                exports.dialog.set('bodyContent', template(tpl, {step: 1, textareaValue: textareaValue}));
+            }
+
+            //进入第三步
+            if ($target.attr('data-step') === '3' && $target.hasClass('J-preview')) {
+                //基础判断，判断字段是否已经全部选中
+                var $alreadyTh = $('th.J-menu.already');
+                if ($alreadyTh.length === fieldsArray.length) {
+                    var cell = (function () {
+                        var arr = {};
+                        $alreadyTh.each(function (index, item) {
+                            var $item = $(item);
+                            arr[$item.find('div.fields-name').text()] = $(item).data('cell');
+                        });
+                        return arr;
+                    })();
+
+                    exports.dialog.set('bodyContent', template(tpl, {step: 3, data: excelData, cell: cell, fieldsArray: fieldsArray}));
+
+                } else {
+                    alert('请先选择好所有的字段')
+                }
+            }
+
+        }
+    );
+
+    //第二步
+    function transExcelData(value) {
+        var reg = /[\n\t]"[^\t]*(\n+)[^\t]*"[\n\t]/g;
+        value = value.replace(reg, function (re) {
+            return re.replace(/["\n]/g, '');
+        });
+        value = value.replace(/\r/g, '');
+        value = value.replace(/'/g, '’');
+        var rowDataList = value.split('\n');
+        excelData = [];
+        for (var i = 0; i < rowDataList.length; i++) {
+            var row = rowDataList[i];
+            if ($.trim(row).length < 1) continue;
+            excelData.push(rowDataList[i].split('\t'));
+        }
+
+        excelData = filterEmptyCell(excelData);
+
+        exports.dialog.set('bodyContent', template(tpl, {data: excelData, step: 2, sumLength: excelData.length}))
+
+    }
+
+    //过滤掉完全空的列
+    function filterEmptyCell(data) {
+        //获取最大列数
+        for (var i = 0; i < data[0].length; i++) {
+            if (checkIsEmptyString(i) === true) {
+                for (var j = 0; j < data.length; j++)   data[j].splice(i, 1);
+                i -= 1;
+            }
+        }
+
+        function checkIsEmptyString(j) {
+            for (var i = 0; i < data.length; i++)  if (data[i][j] === '') return true;
+            return false;
+        }
+
+        return data;
+    }
+
+
+    $(document).on('mouseenter mouseleave', 'th.J-menu', function (ev) {
         var $target = $(ev.currentTarget);
-        var form = ev.target.form;
+        if (ev.type === 'mouseenter') {
+            $(this).find('div.wrapper').append($('<div class="menu"><div class="cancel">取消</div>' + (function () {
 
-        if ($target.attr('data-step') === '1') {
-            var textarea = form.elements['excel-data'].value;
-            transExcelData(textarea);
+                var th = $target.siblings('th').add($target);
+
+                var html = '';
+                var leftArray = [];
+                th.each(function (index, item) {
+                    var fieldsName = $(item).find('div.fields-name');
+                    if (fieldsName.text() !== '请选择') {
+                        if (fieldsArray.indexOf($.trim(fieldsName.text())) > -1) leftArray.push(fieldsName.text())
+                    }
+                });
+                for (var i = 0; i < fieldsArray.length; i++) {
+                    if (leftArray.indexOf(fieldsArray[i]) > -1) continue;
+                    html += '<div>' + fieldsArray[i] + '</div>'
+                }
+                return html;
+
+            })() + '</div>'))
         } else {
-
+            $(this).find('div.menu').remove();
         }
     });
 
-    function transExcelData(value) {
-        var table = [];
-        var line = value.split(/[\r\n]/gm);
+    $(document).on('click', 'th.J-menu .menu div', function (ev) {
 
-        for (var i = 0; i < line.length; i++) {
-            var obj = line[i];
-            console.log(obj.split(/\t+/)[3]);
+        var $this = $(this);
+        var $th = $(this).parents('th');
+
+        if (!$this.hasClass('cancel')) {
+            $th.find('div.fields-name').html($this.html());
+            $th.addClass('already');
+        } else {
+            $th.find('div.fields-name').html('请选择');
+            $th.removeClass('already');
         }
+        $th.find('div.menu').remove();
 
-    }
+    });
 
 });

@@ -8,27 +8,19 @@
 <script type="text/javascript">
 
     var data = [
-        ["橙果", "旅交会+玄莹", "", "", "", "按件计酬(wb-anjianjichou)", "" ],
-        ["橙果", "旅交会+玄莹", "", "", "", "按件计酬(wb-anjianjichou)", "" ],
-        ["橙果", "那些你没坐过的飞机+羽真", "", "", "", "按件计酬(wb-anjianjichou)", "" ],
+        [ "橙果", "旅交会+玄莹", "", "", "", "按件计酬(wb-anjianjichou)", "" , "" , "" , 'a'],
+        ["橙果", "旅交会+玄莹", "", "", "", "按件计酬(wb-anjianjichou)", "" , "" , "" , 'b'],
+        ["橙果", "那些你没坐过的飞机+羽真", "", "", "", "按件计酬(wb-anjianjichou)", "" , "" , "" , 'c'],
     ];
 
     //获取最大列数
-    var data2 = new Array(data.length);
-
     for (var i = 0; i < data[0].length; i++) {
-        var isEmpty = checkIsEmptyString(i);
-        if (!isEmpty) {
-            for (var j = 0; j < data2.length; j++) {
-                var o = data2[j];
-
-            }
+        if (checkIsEmptyString(i) === true) {
+            for (var j = 0; j < data.length; j++)   data[j].splice(i, 1);
+            i -= 1;
         }
     }
-    console.log(data)
 
-    //检查某列是否全部为空
-    //如果全部为空，则予以排除
     function checkIsEmptyString(j) {
         for (var i = 0; i < data.length; i++)  if (data[i][j] !== '') return false;
         return true;

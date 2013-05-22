@@ -56,10 +56,6 @@ table {
     width: 100%;
 }
 
-table th, table td {
-    padding: .5em;
-}
-
 #login th {
     text-align: right;
 }
@@ -236,20 +232,4 @@ label[for=upload-file-field] {
     overflow: hidden;
     width: 100%;
     text-align: center;
-}
-
-form.add-multiple-task {
-}
-
-form.add-multiple-task textarea {
-    width: 600px;
-    height: 300px;
-    display: block;
-    border: none 0;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, .3);
-    border-radius: 2px;
-    margin-bottom: 1em;
-    padding: 8px;
-    font-size: 12px;
-    font-family: simsun, sans-serif;
 }
