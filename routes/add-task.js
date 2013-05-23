@@ -10,13 +10,65 @@ var app = require('app');
 var DB = require('db');
 
 function trans(s) {
-    return s && s.trim().length > 0 ? s.trim() : undefined;
+    return s && s.trim().length > 0 ? s.trim() : '';
 }
 
 app.post('/add-task', function (req, res) {
 
+    console.log(req.body);
+    var serverInfo = {
+        err: []
+    };
+
+    try {
+        var json = JSON.parse(req.body.json);
+    } catch (e) {
+        serverInfo.err.push('提交的数据格式非法');
+        return;
+    }
+
+    var TASK = [];
+
+    json.data.forEach(function (item) {
+
+        var task = {
+            //给谁,记录ObjectId
+            to: trans(item[0]),
+            //任务名
+            name: trans(item[1]),
+            //需求方
+            demand_side: trans(item[2]),
+            //小时数
+            timer: trans(item[3]),
+            //任务类型
+            type: trans(item[4]),
+            //派发者，记录ObjectId
+            from: req.session._id,
+            //时间戳
+            time_stamp: Date.now()
+        };
+
+        var arr = [];
+
+        if (task.to.length < 1) arr.push('您必须指定任务的完成者');
+        if (task.name.length < 1) arr.push('任务名称不能为空');
+        if (task.demand_side.length < 1) arr.push('缺少需求方名称');
+        if (/^[^0]\d*$/ === false) arr.push('任务时常为空或不正确');
+        if (task.type.length < 1) arr.push('缺少任务类型');
+
+        if (arr.length < 1) {
+            TASK.push(task)
+        } else {
+            serverInfo.err.push(item + '存在问题' + arr.join(','));
+        }
+    });
+
     res.header('content-type', 'text/plain;charset=utf-8');
 
+    res.json({task: TASK});
+
+    console.log(TASK)
+    return;
     if (!require('./login').isLogin(req)) {
         res.end('请先登录');
         return;
@@ -44,7 +96,7 @@ app.post('/add-task', function (req, res) {
             demand_side: trans(body.demand_side),
             //小时数
             timer: trans(body.timer),
-            //备注
+            //任务类型
             note: trans(body.note),
             //派发者，记录ObjectId
             from: req.session._id,

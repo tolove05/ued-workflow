@@ -19,6 +19,12 @@ define(function (require, exports, module) {
     //缓存准备好了的数据
     var excelData = [];
 
+    //缓存第二步时所选择的字段（也可能未选）
+    var step2HTML = '';
+
+    //缓存准备提交的数据
+    var postExcelData;
+
     //存放必备的字段名称
     var fieldsArray = ['设计师', '任务名', '需求方', '任务时长', '任务类型'];
 
@@ -91,23 +97,41 @@ define(function (require, exports, module) {
                     })();
 
 
-                    var _data = new Array(excelData.length);
+                    postExcelData = new Array(excelData.length);
                     excelData.forEach(function (item, i) {
                         fieldsArray.forEach(function (fields, j) {
-                            if (!_data[i]) {
-                                _data[i] = [];
+                            if (!postExcelData[i]) {
+                                postExcelData[i] = [];
                             }
-                            _data[i].push(excelData[i][cell[fields]]);
+                            postExcelData[i].push(excelData[i][cell[fields]]);
                         })
                     });
 
+                    step2HTML = exports.dialog.get('contentEl').one('div.ks-stdmod-body').html();
+                    exports.dialog.set('bodyContent', template(tpl, {step: 3, data: postExcelData, cell: cell, fieldsArray: fieldsArray}));
 
-                    exports.dialog.set('bodyContent', template(tpl, {step: 3, data: _data, cell: cell, fieldsArray: fieldsArray}));
                 } else {
                     alert('请先选择好所有的字段')
                 }
             }
 
+            //从第三步回到第二步
+            if ($target.attr('data-step') === '2' && $target.hasClass('J-go-back')) {
+                exports.dialog.set('bodyContent', step2HTML);
+            }
+
+            //最后一步保存数据
+            if ($target.attr('data-step') === '4' && $target.hasClass('J-save')) {
+                $.ajax({
+                    url: '/add-task',
+                    type: 'post',
+                    cache: false,
+                    dataType: 'json',
+                    data: {
+                        json: JSON.stringify({data: postExcelData})
+                    }
+                })
+            }
         }
     );
 
@@ -152,6 +176,7 @@ define(function (require, exports, module) {
     }
 
 
+    //让组长或主管可以选择该字段所对应的所有任务单
     $(document).on('mouseenter mouseleave', 'th.J-menu', function (ev) {
         var $target = $(ev.currentTarget);
         if (ev.type === 'mouseenter') {

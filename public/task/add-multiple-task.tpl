@@ -56,7 +56,7 @@
             #end
         </table>
     </div>
-    <input type="button" name="step" class="btn J-add-multiple-task J-go-back" value="&lt;&lt;返回上一步" data-step="1">
-    <input type="button" name="step" class="btn J-add-multiple-task" value="保存任务并通知设计师 &gt;&gt;" data-step="4">
+    <input type="button" name="step" class="btn J-add-multiple-task J-go-back" value="&lt;&lt;返回上一步" data-step="2">
+    <input type="button" name="step" class="btn J-add-multiple-task J-save" value="保存任务并通知设计师 &gt;&gt;" data-step="4">
     #end
 </form>
