@@ -53,7 +53,10 @@ app.post('/add-task', function (req, res) {
             //派发者，记录ObjectId
             from: req.session._id,
             //时间戳
-            time_stamp: Date.now()
+            time_stamp: Date.now(),
+            //
+            category:''//1 设计师任务，2：前端任务
+            
         };
 
         var arr = [];
