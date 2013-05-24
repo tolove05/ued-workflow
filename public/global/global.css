@@ -56,10 +56,6 @@ table {
     width: 100%;
 }
 
-#login th {
-    text-align: right;
-}
-
 .ks-overlay-mask-shown {
     background: rgba(255, 255, 255, .5);
 }
@@ -117,7 +113,7 @@ input[type=text]:focus, input[type=password]:focus {
     width: 200px;
     border-right: dotted 1px #eee;
     font-family: "Microsoft Yahei", sans-serif;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 #sidebar h1 {
@@ -136,6 +132,9 @@ input[type=text]:focus, input[type=password]:focus {
     line-height: 40px;
     border-bottom: dotted 1px #353855;
     padding-left: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #sidebar li:last-child {

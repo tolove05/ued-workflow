@@ -5,6 +5,7 @@
 var app = require('app');
 var DB = require('db');
 
+
 app.get('/', function (req, res) {
 
     res.render('index', {
@@ -13,6 +14,7 @@ app.get('/', function (req, res) {
         isLogin: require('./login').isLogin(req),
         user: require('user').user
     });
+
 });
 
 require('./add-task');

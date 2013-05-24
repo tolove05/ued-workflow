@@ -10,12 +10,14 @@ define(function (require, exports, module) {
     var tpl = require('./login.tpl');
     var template = require('template/template/1.0.0/template-debug');
 
+    require('./login.css');
+
     function login(cb) {
         KISSY.use("overlay", function (S, O) {
             var dialog = new O.Dialog({
                 width: 400,
                 headerContent: '登陆',
-                bodyContent: tpl,
+                bodyContent: template(tpl, {model: 'login'}),
                 mask: true,
                 zIndex: 9999,
                 align: {
@@ -99,14 +101,60 @@ define(function (require, exports, module) {
 
     isLogin();
 
-    function loginOut() {
-
-    }
-
+    //退出
     $(document).on('click', '.login-out', function () {
         $.get('/login-out', function (data) {
             loginFail();
         });
     });
+
+    //第一次登陆
+    $(document).on('click', '.J-first-login', function () {
+        exports.dialog.set('headerContent', '第一次登陆');
+        exports.dialog.set('bodyContent', template(tpl, {model: 'first-login'}));
+        exports.dialog.center();
+    });
+
+    //第一次设置密码
+    $(document).on('click', '.J-init-user', function () {
+        var form = this.form;
+        var data = {
+            user: form.elements['user'].value.trim(),
+            pwd1: form.elements['pwd1'].value.trim(),
+            pwd2: form.elements['pwd2'].value.trim()
+        };
+
+        var err = [];
+        if (data.user.length < 2) err.push('用户名格式不正确');
+        if (data.pwd1.length < 4) err.push('密码不能低于四位');
+        if (data.pwd1 !== data.pwd2) err.push('两次密码不匹配');
+
+        if (err.length > 0) {
+            alert(err.join('\r\n'));
+            return;
+        }
+
+        var sha = require('sha');
+        data.pwd1 = data.pwd2 = sha.hex_sha512(data.pwd1);
+
+        $.ajax({
+            type: 'POST',
+            url: '/login/init-user',
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        })
+
+    });
+
+    //返回登陆界面
+    $(document).on('click', '.J-back-to-login', function () {
+        exports.dialog.set('bodyContent', template(tpl, {model: 'login'}));
+        exports.dialog.set('headerContent', '登陆');
+        exports.dialog.center();
+    });
+
 
 });
