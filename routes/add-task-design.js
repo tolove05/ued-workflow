@@ -91,15 +91,14 @@ app.post('/add-task-design', function (req, res) {
             return;
         }
 
-        console.log(data.group);
         if (!data.group || data.group.indexOf('添加设计师任务单') < 0) {
-            serverInfo.err.push('您没有权限');
+            serverInfo.err.push('未授权访问');
             res.json(serverInfo);
             return;
         }
 
-        var taskOfDesign = new DB.Collection(DB.Client, 'task-of-design');
-        taskOfDesign.insert(TASK, {safe: true},
+        var task_of_design = new DB.Collection(DB.Client, 'task-of-design');
+        task_of_design.insert(TASK, {safe: true},
             function () {
                 serverInfo.msg = '保存成功';
                 serverInfo.success = true;
