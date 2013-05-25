@@ -110,7 +110,7 @@ define(function (require, exports, module) {
 
     //第一次登陆
     $(document).on('click', '.J-first-login', function () {
-        exports.dialog.set('headerContent', '第一次登陆');
+        exports.dialog.set('headerContent', '初始化你的帐户');
         exports.dialog.set('bodyContent', template(tpl, {model: 'first-login'}));
         exports.dialog.center();
     });

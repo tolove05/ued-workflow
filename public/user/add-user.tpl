@@ -1,4 +1,4 @@
-<form action="/add-user" method="post" class="form-horizontal">
+<form action="/add-user" method="post" class="form-horizontal" id="add-user">
     <table>
         <tr>
             <th>用户名</th>
@@ -12,8 +12,14 @@
             <th>组</th>
             <td>
                 <select name="group">
-                    <option value="1">用户</option>
-                    <option value="9">管理员</option>
+                    <option value="0">请选择组员类型</option>
+                    <option value="设计师">设计师</option>
+                    <option value="设计组长">设计组长</option>
+                    <option value="前端">前端</option>
+                    <option value="前端组长">前端组长</option>
+                    <option value="经理助理">经理助理</option>
+                    <option value="添加设计师任务单">添加设计师任务单</option>
+                    <option value="管理员">管理员</option>
                 </select>
             </td>
         </tr>

@@ -10,7 +10,8 @@ var app = require('app');
 
 var DB = require('db');
 
-app.get(/^\/task\/([a-z0-9]{24})$/, function (req, res) {
+//获取设计师任务的详情
+app.get(/^\/task-of-design\/([a-z0-9]{24})$/, function (req, res) {
 
     try {
         var _id = DB.mongodb.ObjectID(req.params[0]);
@@ -24,7 +25,7 @@ app.get(/^\/task\/([a-z0-9]{24})$/, function (req, res) {
         return;
     }
 
-    var task = new DB.Collection(DB.Client, 'task');
+    var task = new DB.Collection(DB.Client, 'task-of-design');
 
     task.findOne({_id: _id}, {}, function (err, docs) {
         if (docs !== null) {

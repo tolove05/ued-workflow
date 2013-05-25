@@ -9,8 +9,6 @@ define(function (require, exports, module) {
 
     var tpl = require('./add-user.tpl');
 
-    var template
-
     function login(cb) {
         KISSY.use("overlay", function (S, O) {
             var dialog = new O.Dialog({
@@ -50,7 +48,11 @@ define(function (require, exports, module) {
         show();
     });
 
-    $(document).on('click', 'input.J-add-user', function () {
+    $(document).on('click', '.J-add-user-control', function () {
+        show();
+    });
+
+    $(document).on('click', '.J-add-user', function () {
         var form = this.form;
         var name = form.elements.name.value;
         var sha = require('sha');

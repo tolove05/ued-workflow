@@ -13,13 +13,15 @@ function trans(s) {
     return s && s.trim().length > 0 ? s.trim() : '';
 }
 
-app.post('/add-task', function (req, res) {
+app.post('/add-task-design', function (req, res) {
+
+
+    //需要登陆
+    //需要管理员角色的组权限
 
     var serverInfo = {
         err: []
     };
-
-    res.header('content-type', 'text/plain;charset=utf-8');
 
     if (!require('./login').isLogin(req)) {
         serverInfo.err.push('请先登陆')
@@ -53,10 +55,7 @@ app.post('/add-task', function (req, res) {
             //派发者，记录ObjectId
             from: req.session._id,
             //时间戳
-            time_stamp: Date.now(),
-            //
-            category:''//1 设计师任务，2：前端任务
-            
+            time_stamp: Date.now()
         };
 
         var arr = [];
@@ -76,25 +75,30 @@ app.post('/add-task', function (req, res) {
     });
 
     //如果任意一条数据存在错误，则拒绝保存
+    var user = new DB.Collection(DB.Client, 'user');
+
     if (serverInfo.err.length > 0) {
         res.json(serverInfo);
         return;
     }
 
-    var user = new DB.Collection(DB.Client, 'user');
-    user.findOne({_id: DB.mongodb.ObjectID(req.session._id)}, function (err, data) {
-        if (err) {
-            res.end('您没有权限添加任务单');
+    user.findOne({_id: DB.mongodb.ObjectID(req.session._id)}, {fields: {group: 1}}, function (err, data) {
+
+        if (err || !data) {
+            serverInfo.err.push('无法查找到当前用户');
+            res.json(serverInfo);
             return;
         }
 
-        if (data && data.group !== '9') {
-            res.end('您没有权限');
+        console.log(data.group);
+        if (!data.group || data.group.indexOf('添加设计师任务单') < 0) {
+            serverInfo.err.push('您没有权限');
+            res.json(serverInfo);
             return;
         }
 
-        var collection = new DB.Collection(DB.Client, 'task');
-        collection.insert(TASK, {safe: true},
+        var taskOfDesign = new DB.Collection(DB.Client, 'task-of-design');
+        taskOfDesign.insert(TASK, {safe: true},
             function () {
                 serverInfo.msg = '保存成功';
                 serverInfo.success = true;

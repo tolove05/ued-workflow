@@ -123,7 +123,7 @@ define(function (require, exports, module) {
             //最后一步保存数据
             if ($target.attr('data-step') === '4' && $target.hasClass('J-save')) {
                 $.ajax({
-                    url: '/add-task',
+                    url: '/add-task-design',
                     type: 'post',
                     cache: false,
                     dataType: 'json',

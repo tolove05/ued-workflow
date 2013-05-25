@@ -8,10 +8,11 @@
 
 define(function (require, exports, module) {
 
-    require('/task/init');
-
     require('/login/init');
 
     require('/user/init');
+
+    //设计师
+    require('/task/design/init');
 
 });

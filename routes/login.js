@@ -20,11 +20,11 @@ app.post('/login', function (req, res) {
 
     var collection = new DB.Collection(DB.Client, 'user');
 
-    collection.findOne({name: name, pwd: pwd}, {fields: {_id: 1}}, function (err, docs) {
+    collection.findOne({name: name, pwd: pwd}, {fields: {_id: 1, group: 1}}, function (err, docs) {
         if (!err && docs) {
             req.session.name = name;
             req.session._id = docs._id.toString();
-            res.end(JSON.stringify({_id: docs._id, name: require('user').user[docs._id]}));
+            res.end(JSON.stringify(docs));
         } else {
             res.end('{}');
         }
@@ -99,8 +99,7 @@ app.post('/login/init-user', function (req, res) {
                         name: body.user,
                         pwd: body.pwd1,
                         time_stamp: Date.now(),
-                        //1表示普通用户
-                        group: 1
+                        group: ['设计师']
                     }, {safe: true}, function (err, docs) {
                         if (!err && docs) {
                             serverInfo.status = 1;

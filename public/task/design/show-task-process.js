@@ -18,7 +18,7 @@ define(function (require, exports, module) {
 
     var user = require('user/list?callback=define');
 
-    var tpl = require('/task/task-process-tpl.tpl#');
+    var tpl = require('./task-process-tpl.tpl');
 
     function showProcess(data) {
         $('#container .task-title').html(data.name);
