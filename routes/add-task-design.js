@@ -15,7 +15,6 @@ function trans(s) {
 
 app.post('/add-task-design', function (req, res) {
 
-
     //需要登陆
     //需要管理员角色的组权限
 
@@ -55,7 +54,8 @@ app.post('/add-task-design', function (req, res) {
             //派发者，记录ObjectId
             from: req.session._id,
             //时间戳
-            time_stamp: Date.now()
+            time_stamp: Date.now(),
+            company: trans(req.body.company)
         };
 
         var arr = [];
@@ -66,6 +66,7 @@ app.post('/add-task-design', function (req, res) {
         task.timer = parseInt(task.timer, 10);
         if (isNaN(task.timer) || task.timer < 1) arr.push('任务时长必须大于0');
         if (task.type.length < 1) arr.push('缺少任务类型');
+        if (task.company.length < 1) arr.push('缺少业务所对应的公司');
 
         if (arr.length < 1) {
             TASK.push(task)

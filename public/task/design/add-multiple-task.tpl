@@ -35,6 +35,12 @@
     <input type="button" name="step" class="btn J-add-multiple-task J-preview" value="预览数据 &gt;&gt;" data-step="3">
     #elseif(step==3)
     <div class="content" style="height: 400px;overflow: auto;">
+        <div>
+            <label><input type="radio" name="company" checked="checked" value="阿里巴巴">阿里巴巴</label>
+            <label><input type="radio" name="company" value="京东">京东</label>
+            <label><input type="radio" name="company" value="腾讯">腾讯</label>
+            <label><input type="radio" name="company" value="其他">其他</label>
+        </div>
         <table>
             <tr>
                 #each(name in fieldsArray)

@@ -128,6 +128,7 @@ define(function (require, exports, module) {
                     cache: false,
                     dataType: 'json',
                     data: {
+                        company: this.form.elements['company'].value,
                         json: JSON.stringify({data: postExcelData})
                     }
                 })
