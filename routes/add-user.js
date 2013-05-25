@@ -18,11 +18,11 @@ app.post('/add-user', function (req, res) {
     var body = req.body;
     var serverInfo = {err: []};
 
-    /*if (!require('./login').isLogin(req)) {
+    if (!require('./login').isLogin(req)) {
         serverInfo.err.push('请先登陆')
         res.json(serverInfo);
         return;
-    }*/
+    }
 
     var user = {
         name: trans(body.name),
@@ -43,22 +43,27 @@ app.post('/add-user', function (req, res) {
     //TODO：检测当前帐户是否有添加管理员的权利
 
     //是否已经存在
-    collection.findOne({name: user.name}, function (err, data) {
-        collection.findOne({name: user.name}, function (err, data) {
-            if (!err && data) {
-                serverInfo.err.push('用户已经存在了');
-                res.json(serverInfo);
-            } else {
-                collection.insert(user, {safe: true},
-                    function () {
-                        serverInfo.status = 0;
-                        serverInfo.msg = user.name + '添加成功，可以以此帐号登陆了';
-                        res.json(serverInfo);
-                        //更新用户缓存
-                        require('user').updateUser();
-                    });
-            }
-        });
+    collection.findOne({name: user.name}, {fields: {group: 1}}, function (err, data) {
+        if (data && data.group.indexOf('管理员') > -1) {
+            collection.findOne({name: user.name}, function (err, data) {
+                if (!err && data) {
+                    serverInfo.err.push('用户已经存在了');
+                    res.json(serverInfo);
+                } else {
+                    collection.insert(user, {safe: true},
+                        function () {
+                            serverInfo.status = 0;
+                            serverInfo.msg = user.name + '添加成功，可以以此帐号登陆了';
+                            res.json(serverInfo);
+                            //更新用户缓存
+                            require('user').updateUser();
+                        });
+                }
+            });
+        } else {
+            serverInfo.err.push('未授权访问');
+            res.json(serverInfo);
+        }
     });
 });
 
