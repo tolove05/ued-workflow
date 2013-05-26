@@ -1,4 +1,4 @@
-<form action="/add-user" method="post" class="form-horizontal" id="add-user">
+<form action="/add-user" method="post"  id="add-user-form">
     <table>
         <tr>
             <th>用户名</th>
@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <th>&nbsp;</th>
-            <td><input type="button" class="J-add-user" value="保存用户"></td>
+            <td><input type="button" class="btn J-add-user" value="保存用户"></td>
         </tr>
     </table>
 </form>

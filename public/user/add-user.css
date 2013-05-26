@@ -1,0 +1,8 @@
+#add-user-form th {
+    text-align: right;
+}
+
+#add-user-form th,
+#add-user-form td {
+    padding: 12px;
+}

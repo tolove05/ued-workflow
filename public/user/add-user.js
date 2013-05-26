@@ -9,6 +9,8 @@ define(function (require, exports, module) {
 
     var tpl = require('./add-user.tpl');
 
+    require('./add-user.css');
+
     function login(cb) {
         KISSY.use("overlay", function (S, O) {
             var dialog = new O.Dialog({

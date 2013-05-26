@@ -81,11 +81,8 @@ define(function (require, exports, module) {
 
 
     function loginSuccess(data) {
-
         var loginSuccessTpl = require('./login-success.tpl');
-
         $('#control').html(template(loginSuccessTpl, data));
-
     }
 
     function loginFail() {
@@ -95,7 +92,7 @@ define(function (require, exports, module) {
 
     function isLogin() {
         $.getJSON('/check-login', function (data) {
-            if (data._id) {
+            if (data.status === 1) {
                 loginSuccess(data);
             } else {
                 loginFail();

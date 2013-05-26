@@ -12,18 +12,16 @@ var DB = require('db');
 app.post('/login', function (req, res) {
 
     var body = req.body;
-
-    res.header('content-type', 'text/plain;charset=utf-8');
-
     var name = body.name;
     var pwd = body.pwd;
 
-    var collection = new DB.Collection(DB.Client, 'user');
+    var user = new DB.Collection(DB.Client, 'user');
 
-    collection.findOne({name: name, pwd: pwd}, {fields: {_id: 1, group: 1}}, function (err, docs) {
+    user.findOne({name: name, pwd: pwd}, {fields: {_id: 1, name: 1, group: 1}}, function (err, docs) {
         if (!err && docs) {
             req.session.name = name;
             req.session._id = docs._id.toString();
+            req.session.group = docs.group;
             res.end(JSON.stringify(docs));
         } else {
             res.end('{}');
@@ -47,15 +45,27 @@ app.get('/login-out', function (req, res) {
 
 //检测是否登陆
 app.get('/check-login', function (req, res) {
-    if (exports.isLogin(req)) {
-        res.end(JSON.stringify({_id: req.session._id, name: require('user').user[req.session._id]}));
-    } else {
-        res.end('{}');
+
+    var result = {
+        err: []
+    };
+
+    if (exports.isLogin(req) === false) {
+        result.status = -2;
+        res.json(result);
+        return;
     }
+
+    res.json({
+        status: 1,
+        _id: req.session._id,
+        name: require('user').user[req.session._id],
+        group: req.session.group
+    });
 });
 
-//第一次登陆
-app.post('/login/init-user', function (req, res) {
+//设计师同学第一次登陆
+app.post('/login/init-design-user', function (req, res) {
 
     var serverInfo = {
         err: []
@@ -87,7 +97,6 @@ app.post('/login/init-user', function (req, res) {
         if (!err && docs === null) {
             //开始查询用户是否已经初始化
             var user = new DB.Collection(DB.Client, 'user');
-            console.log('开始' + body.user)
             user.findOne({name: body.user}, {fields: {_id: 1}}, function (err, docs) {
                 if (!err && docs) {
                     serverInfo.status = -1;
