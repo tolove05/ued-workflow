@@ -14,7 +14,7 @@ define(function (require, exports, module) {
 
             var dialog = new O.Dialog({
                 width: 400,
-                headerContent: '添加新任务',
+                headerContent: '添加单个设计师任务',
                 bodyContent: tpl,
                 mask: true,
                 zIndex: 9999,
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.add-task', function () {
+    $(document).on('click', '.J-add-single-task-of-design-trigger', function () {
         show();
     })
 

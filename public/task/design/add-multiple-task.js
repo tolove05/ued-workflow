@@ -63,7 +63,8 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.J-add-multiple-task-of-design-triggers', function () {
+    //添加多个任务单的触点
+    $(document).on('click', '.J-add-multiple-task-of-design-trigger', function () {
         show();
         if (exports.dialog) {
             exports.dialog.set('bodyContent', template(tpl, {step: 1}))
@@ -71,6 +72,7 @@ define(function (require, exports, module) {
         }
     });
 
+    //添加多个任务时，每一步的触点
     $(document).on('click', '.J-add-multiple-task', function (ev) {
             var $target = $(ev.currentTarget);
             var form = ev.target.form;
