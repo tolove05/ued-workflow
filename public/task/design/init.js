@@ -34,7 +34,7 @@ define(function (require, exports, module) {
 
     require('./sidebar-init');
 
-    require('./show-task-process');
+    require('./show-task-of-process');
 
     require('./add-task');
 

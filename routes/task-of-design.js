@@ -45,7 +45,7 @@ function trim(s) {
 }
 
 //保存任务的进度
-app.post('/add-task-process', function (req, res) {
+app.post('/add-task-of-design-process', function (req, res) {
 
     res.header('content-type', 'application/json;charset=utf-8');
 
@@ -74,7 +74,7 @@ app.post('/add-task-process', function (req, res) {
         return;
     }
 
-    var task = new DB.Collection(DB.Client, 'task-process');
+    var task = new DB.Collection(DB.Client, 'task-of-design-process');
 
     task.insert(data, {safe: true}, function (err, docs) {
         if (!err && docs) {
@@ -91,7 +91,7 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
 
     var _id = req.params[0];
 
-    var list = new DB.Collection(DB.Client, 'task-process');
+    var list = new DB.Collection(DB.Client, 'task-of-design-process');
     list.find({task_id: _id}).sort([
             ['time_stamp', 1]
         ]).toArray(function (err, docs) {

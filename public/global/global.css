@@ -174,11 +174,11 @@ input[type=text]:focus, input[type=password]:focus {
     font-size: 12px;
 }
 
-form[name=add-task-process] {
+form[name=add-task-of-design-process] {
     margin: 1em;
 }
 
-form[name=add-task-process] textarea {
+form[name=add-task-of-design-process] textarea {
     border: 0 none;
     background: #eee;
     border-radius: 2px;

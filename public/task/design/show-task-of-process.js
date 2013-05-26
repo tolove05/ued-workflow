@@ -18,11 +18,11 @@ define(function (require, exports, module) {
 
     var user = require('user/list?callback=define');
 
-    var tpl = require('./task-process-tpl.tpl');
+    var tpl = require('./task-of-process-tpl.tpl');
 
     function showProcess(data) {
         $('#container .task-title').html(data.name);
-        $('#add-task-process-id').val(data._id);
+        $('#add-task-of-process-id').val(data._id);
         $.getJSON('/task-of-design/process/' + data._id, function (res) {
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html)

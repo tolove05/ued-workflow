@@ -8,7 +8,7 @@
 
 define(function (exports, require, module) {
 
-    var $pic = $(document.forms['add-task-process'].elements['content']);
+    var $pic = $(document.forms['add-task-of-design-process'].elements['content']);
     var $prviewFile = $('#preview-file');
 
     //拖进

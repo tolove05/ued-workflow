@@ -55,8 +55,10 @@ define(function (require, exports, module) {
         $.post("/add-task", $(form).serialize());
     });
 
-    var taskProcess = require('./show-task-process');
-    $(document).on('click', '.J-add-task-process ', function (ev) {
+    var taskProcess = require('./show-task-of-process');
+
+    //保存任务进度时的触点
+    $(document).on('click', '.J-add-task-of-design-process ', function (ev) {
         var form = ev.target.form;
 
         $.post(form.action, $(form).serialize(), function (data) {

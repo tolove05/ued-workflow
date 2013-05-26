@@ -11,12 +11,12 @@ block content
     #container
         h4.task-title 选择左侧对应的任务以查看详情
         #content
-        form(action="/add-task-process",method="post",name="add-task-process")
-            input#add-task-process-id(type="hidden",name="_id",value="")
+        form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process")
+            input#add-task-of-process-id(type="hidden",name="_id",value="")
             textarea(type="text",name="content")
             label(for="upload-file-field") 插入附件
             input#upload-file-field(type="file",multiple="multiple")
             #p
             #preview-file
             #upload-list
-            button.btn.J-add-task-process(type="button") 发表意见
+            button.btn.J-add-task-of-design-process(type="button") 发表意见
