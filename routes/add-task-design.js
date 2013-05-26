@@ -15,6 +15,7 @@ function trans(s) {
 
 app.post('/add-task-design', function (req, res) {
 
+
     //需要登陆
     //需要管理员角色的组权限
 
@@ -23,6 +24,7 @@ app.post('/add-task-design', function (req, res) {
     };
 
     if (!require('./login').isLogin(req)) {
+        serverInfo.status = -5;
         serverInfo.err.push('请先登陆')
         res.json(serverInfo);
         return;
@@ -31,6 +33,7 @@ app.post('/add-task-design', function (req, res) {
     try {
         var json = JSON.parse(req.body.json);
     } catch (e) {
+        serverInfo.status = -4;
         serverInfo.err.push('提交的数据格式非法');
         res.json(serverInfo);
         return;
@@ -76,22 +79,25 @@ app.post('/add-task-design', function (req, res) {
     });
 
     //如果任意一条数据存在错误，则拒绝保存
-    var user = new DB.Collection(DB.Client, 'user');
-
     if (serverInfo.err.length > 0) {
+        serverInfo.status = -3;
         res.json(serverInfo);
         return;
     }
 
+    var user = new DB.Collection(DB.Client, 'user');
+
     user.findOne({_id: DB.mongodb.ObjectID(req.session._id)}, {fields: {group: 1}}, function (err, data) {
 
         if (err || !data) {
-            serverInfo.err.push('无法查找到当前用户');
+            serverInfo.err.push('未授权用户');
+            serverInfo.status = -2;
             res.json(serverInfo);
             return;
         }
 
         if (!data.group || data.group.indexOf('添加设计师任务单') < 0) {
+            serverInfo.status = -2;
             serverInfo.err.push('未授权访问');
             res.json(serverInfo);
             return;
@@ -100,6 +106,7 @@ app.post('/add-task-design', function (req, res) {
         var task_of_design = new DB.Collection(DB.Client, 'task-of-design');
         task_of_design.insert(TASK, {safe: true},
             function () {
+                serverInfo.status = 1;
                 serverInfo.msg = '保存成功';
                 serverInfo.success = true;
                 res.json(serverInfo);

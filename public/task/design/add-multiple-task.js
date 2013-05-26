@@ -63,8 +63,9 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.add-multiple-task', function () {
+    $(document).on('click', '.J-add-multiple-task-of-design-triggers', function () {
         show();
+        if (exports.dialog) exports.dialog.set('bodyContent', template(tpl, {step: 1}));
     });
 
     $(document).on('click', '.J-add-multiple-task', function (ev) {
@@ -80,6 +81,7 @@ define(function (require, exports, module) {
             //从第二步返回到第一步
             if ($target.attr('data-step') === '1' && $target.hasClass('J-go-back')) {
                 exports.dialog.set('bodyContent', template(tpl, {step: 1, textareaValue: textareaValue}));
+                exports.dialog.center();
             }
 
             //进入第三步
@@ -109,6 +111,7 @@ define(function (require, exports, module) {
 
                     step2HTML = exports.dialog.get('contentEl').one('div.ks-stdmod-body').html();
                     exports.dialog.set('bodyContent', template(tpl, {step: 3, data: postExcelData, cell: cell, fieldsArray: fieldsArray}));
+                    exports.dialog.center();
 
                 } else {
                     alert('请先选择好所有的字段')
@@ -118,10 +121,14 @@ define(function (require, exports, module) {
             //从第三步回到第二步
             if ($target.attr('data-step') === '2' && $target.hasClass('J-go-back')) {
                 exports.dialog.set('bodyContent', step2HTML);
+                exports.dialog.center();
             }
 
             //最后一步保存数据
             if ($target.attr('data-step') === '4' && $target.hasClass('J-save')) {
+                //避免重复提交
+                if ($target.data('sending') === true)  return;
+                $target.data('sending', true);
                 $.ajax({
                     url: '/add-task-design',
                     type: 'post',
@@ -130,6 +137,11 @@ define(function (require, exports, module) {
                     data: {
                         company: this.form.elements['company'].value,
                         json: JSON.stringify({data: postExcelData})
+                    },
+                    success: function (serverInfo) {
+                        $target.data('sending', true);
+                        exports.dialog.set('bodyContent', template(tpl, {step: 4, serverInfo: serverInfo}));
+                        exports.dialog.center();
                     }
                 })
             }
@@ -155,7 +167,7 @@ define(function (require, exports, module) {
         excelData = filterEmptyCell(excelData);
 
         exports.dialog.set('bodyContent', template(tpl, {data: excelData, step: 2, sumLength: excelData.length}))
-
+        exports.dialog.center();
     }
 
     //过滤掉完全空的列
