@@ -8,6 +8,7 @@
 
 define(function (require, exports, module) {
 
+    //获取当前选中任务的详情
     var id = window.location.href.match(/\/task\/([a-z0-9]{24})/);
 
     seajs.use('/user/list?callback=define&t' + Date.now(), function (user) {

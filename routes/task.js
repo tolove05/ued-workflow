@@ -88,10 +88,6 @@ app.post('/add-task-process', function (req, res) {
 
 app.get(/^\/task\/process\/([a-z0-9]{24})$/, function (req, res) {
 
-    res.header('content-type', 'application/json;charset=utf-8');
-
-    var user = require('user');
-
     var _id = req.params[0];
 
     var list = new DB.Collection(DB.Client, 'task-process');
@@ -104,15 +100,22 @@ app.get(/^\/task\/process\/([a-z0-9]{24})$/, function (req, res) {
 });
 
 
-app.get(/^\/task\/list/, function (req, res) {
+app.get(/^\/task\/list\/(\S+)/, function (req, res) {
 
+    var list = new DB.Collection(DB.Client, 'task-of-design');
 
-    res.header('content-type', 'application/json;charset=utf-8');
+    var result = {
+        err: []
+    };
 
-    var user = require('user');
+    if (!require('./login').isLogin(req)) {
+        result.status = -2;
+        result.err.push('未授权')
+        res.json(result);
+        return;
+    }
 
-    var list = new DB.Collection(DB.Client, 'task');
-    list.find({}).sort([
+    list.find({to: req.params[0]}).sort([
             ['time_stamp', 1]
         ]).toArray(function (err, docs) {
             if (req.query.callback) {

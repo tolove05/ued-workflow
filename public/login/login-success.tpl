@@ -1,4 +1,4 @@
-#{name}，欢迎ni回来！
+<span id="current-login-user">#{name}</span>，欢迎ni回来！
 <a class="login-out">退出登陆</a>
 #if(group.indexOf('添加设计师任务单'\)>-1)
 <a class="add-task">添加单个设计师任务</a>
