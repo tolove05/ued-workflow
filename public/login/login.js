@@ -17,7 +17,7 @@ define(function (require, exports, module) {
             var dialog = new O.Dialog({
                 width: 400,
                 headerContent: '登陆',
-                bodyContent: template(tpl, {model: 'login'}),
+                //bodyContent: template(tpl, {model: 'login'}),
                 mask: true,
                 zIndex: 9999,
                 align: {
@@ -31,12 +31,14 @@ define(function (require, exports, module) {
         });
     }
 
-    function show() {
+    function show(fn) {
         if (exports.dialog) {
             exports.dialog.show();
+            if (fn) fn();
             exports.dialog.center();
         } else {
             login(function () {
+                if (fn) fn();
                 exports.dialog.show();
                 exports.dialog.center();
             })
@@ -47,8 +49,10 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.login', function () {
-        show();
+    $(document).on('click', '.J-login-trigger', function () {
+        show(function () {
+            exports.dialog.set('bodyContent', template(tpl, {model: 'login'}));
+        });
     });
 
     $(document).on('click', 'input.J-login', function () {

@@ -84,7 +84,7 @@ app.post('/login/init-user', function (req, res) {
 
     collection.findOne({to: body.user}, {fields: {_id: 1}}, function (err, docs) {
 
-        if (!err && docs) {
+        if (!err && docs === null) {
             //开始查询用户是否已经初始化
             var user = new DB.Collection(DB.Client, 'user');
             console.log('开始' + body.user)
