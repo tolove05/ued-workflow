@@ -65,7 +65,10 @@ define(function (require, exports, module) {
 
     $(document).on('click', '.J-add-multiple-task-of-design-triggers', function () {
         show();
-        if (exports.dialog) exports.dialog.set('bodyContent', template(tpl, {step: 1}));
+        if (exports.dialog) {
+            exports.dialog.set('bodyContent', template(tpl, {step: 1}))
+            exports.dialog.center();
+        }
     });
 
     $(document).on('click', '.J-add-multiple-task', function (ev) {

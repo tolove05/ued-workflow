@@ -66,10 +66,10 @@
     <input type="button" name="step" class="btn J-add-multiple-task J-save" value="保存任务并通知设计师 &gt;&gt;" data-step="4">
     #elseif(step==4)
     <p>已经提交任务单：以下是服务器返回的详情：</p>
-        #if(status<1)
+        #if(serverInfo.status<1)
             <p style="color:red;">发生错误：<br>#{serverInfo.err.join('<br>')}</p>
         #else
-            <p style="color:green;">#{msg}</p>
+            <p style="color:green;">#{serverInfo.msg}</p>
         #end
     #end
 </form>

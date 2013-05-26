@@ -13,6 +13,8 @@ function trans(s) {
     return s && s.trim().length > 0 ? s.trim() : undefined;
 }
 
+//只有管理员组权限，才能访问此路由
+
 app.post('/add-user', function (req, res) {
 
     var body = req.body;
@@ -40,10 +42,8 @@ app.post('/add-user', function (req, res) {
 
     var collection = new DB.Collection(DB.Client, 'user');
 
-    //TODO：检测当前帐户是否有添加管理员的权利
-
-    //是否已经存在
-    collection.findOne({name: user.name}, {fields: {group: 1}}, function (err, data) {
+    //首先查询当前请求的用户，是否具有管理员权限
+    collection.findOne({_id: DB.mongodb.ObjectID(req.session._id)}, {fields: {group: 1}}, function (err, data) {
         if (data && data.group.indexOf('管理员') > -1) {
             collection.findOne({name: user.name}, function (err, data) {
                 if (!err && data) {
