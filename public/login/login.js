@@ -143,11 +143,12 @@ define(function (require, exports, module) {
 
         $.ajax({
             type: 'POST',
-            url: '/login/init-user',
+            url: '/login/init-design-user',
             data: data,
             dataType: 'json',
             success: function (data) {
-
+                exports.dialog.set('bodyContent', data.status === 1 ? '保存成功' : '<br>失败:<br>' + data.err.join('<br>'));
+                exports.dialog.center();
             }
         })
 

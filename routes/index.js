@@ -23,7 +23,7 @@ require('./add-user');
 
 require('./login');
 
-require('./task');
+require('./task-of-design');
 
 require('./user');
 

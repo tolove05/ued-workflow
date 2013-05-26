@@ -9,7 +9,7 @@
 define(function (require, exports, module) {
 
     function getTaskList(user, filter) {
-        $.getJSON('/task/list/' + user, function (res) {
+        $.getJSON('/task-of-design/list/' + user, function (res) {
 
             var li = document.createDocumentFragment();
 
@@ -22,7 +22,7 @@ define(function (require, exports, module) {
                 li.appendChild(_li);
             }
 
-            $('#sidebar ul').append(li);
+            $('#sidebar ul').html(li);
 
             $('#sidebar li.checked').trigger('mousedown')
 

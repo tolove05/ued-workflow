@@ -44,6 +44,7 @@ function trim(s) {
     return typeof s === 'string' && s.trim().length > 0 ? s.trim() : undefined;
 }
 
+//保存任务的进度
 app.post('/add-task-process', function (req, res) {
 
     res.header('content-type', 'application/json;charset=utf-8');
@@ -86,7 +87,7 @@ app.post('/add-task-process', function (req, res) {
 });
 
 
-app.get(/^\/task\/process\/([a-z0-9]{24})$/, function (req, res) {
+app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
 
     var _id = req.params[0];
 
@@ -100,7 +101,7 @@ app.get(/^\/task\/process\/([a-z0-9]{24})$/, function (req, res) {
 });
 
 
-app.get(/^\/task\/list\/(\S+)/, function (req, res) {
+app.get(/^\/task-of-design\/list\/(\S+)/, function (req, res) {
 
     var list = new DB.Collection(DB.Client, 'task-of-design');
 

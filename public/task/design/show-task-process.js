@@ -23,7 +23,7 @@ define(function (require, exports, module) {
     function showProcess(data) {
         $('#container .task-title').html(data.name);
         $('#add-task-process-id').val(data._id);
-        $.getJSON('/task/process/' + data._id, function (res) {
+        $.getJSON('/task-of-design/process/' + data._id, function (res) {
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html)
         })
