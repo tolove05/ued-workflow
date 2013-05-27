@@ -107,8 +107,8 @@ app.post('/login/init-design-user', function (req, res) {
                     user.insert({
                         name: body.user,
                         pwd: body.pwd1,
-                        time_stamp: Date.now(),
-                        group: ['设计师']
+                        group: ['设计师'],
+                        time_stamp: Date.now()
                     }, {safe: true}, function (err, docs) {
                         if (!err && docs) {
                             serverInfo.status = 1;

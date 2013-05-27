@@ -29,7 +29,8 @@ app.post('/add-user', function (req, res) {
     var user = {
         name: trans(body.name),
         pwd: trans(body.pwd),
-        group: trans(body.group)
+        group: trans(body.group),
+        time_stamp: Date.now()
     };
 
     if (!user.name || !user.pwd || !user.group || !/^[a-z0-9]{128}$/.test(user.pwd)) {
@@ -38,6 +39,7 @@ app.post('/add-user', function (req, res) {
         return;
     }
 
+    //group一直都是数组，代表着用户的权限
     user.group = [user.group];
 
     var collection = new DB.Collection(DB.Client, 'user');
