@@ -1,4 +1,4 @@
-<form action="/add-user" method="post"  id="add-user-form">
+<form action="/add-user" method="post" id="add-user-form">
     <table>
         <tr>
             <th>用户名</th>
@@ -9,12 +9,13 @@
             <td><input type="password" name="pwd"></td>
         </tr>
         <tr>
-            <th>组</th>
+            <th>请选择角色<br>不同的角色权限不同</th>
             <td>
                 <select name="group">
                     <option value="0">请选择组员类型</option>
                     <option value="设计师">设计师</option>
                     <option value="设计组长">设计组长</option>
+                    <option value="设计审核">设计审核</option>
                     <option value="前端">前端</option>
                     <option value="前端组长">前端组长</option>
                     <option value="经理助理">经理助理</option>
