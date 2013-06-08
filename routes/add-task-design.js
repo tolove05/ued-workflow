@@ -41,6 +41,8 @@ app.post('/add-task-design', function (req, res) {
 
     var TASK = [];
 
+    serverInfo.taskError = [];
+    //开始处理任务单的错误
     json.data.forEach(function (item) {
 
         var task = {
@@ -67,19 +69,19 @@ app.post('/add-task-design', function (req, res) {
         if (task.name.length < 1) arr.push('任务名称不能为空');
         if (task.demand_side.length < 1) arr.push('缺少需求方名称');
         task.timer = parseInt(task.timer, 10);
-        if (isNaN(task.timer) || task.timer < 1) arr.push('任务时长必须大于0');
+        if (isNaN(task.timer) || task.timer <= 0) arr.push('任务时长必须大于0');
         if (task.type.length < 1) arr.push('缺少任务类型');
         if (task.company.length < 1) arr.push('缺少业务所对应的公司');
 
         if (arr.length < 1) {
             TASK.push(task)
         } else {
-            serverInfo.err.push(item + '存在问题：' + arr.join(','));
+            serverInfo.taskError.push(item + '存在问题：' + arr.join(','));
         }
     });
 
-    //如果任意一条数据存在错误，则拒绝保存
-    if (serverInfo.err.length > 0) {
+    //检查数据是否全错了
+    if (serverInfo.taskError.length === json.data) {
         serverInfo.status = -3;
         res.json(serverInfo);
         return;
@@ -107,9 +109,12 @@ app.post('/add-task-design', function (req, res) {
         task_of_design.insert(TASK, {safe: true},
             function () {
                 serverInfo.status = 1;
+                //返回插入的行数
+                serverInfo.rows = TASK.length;
                 serverInfo.msg = '保存成功';
                 serverInfo.success = true;
                 res.json(serverInfo);
+                //todo:将错误信息，保留在数据库中
             });
     });
 

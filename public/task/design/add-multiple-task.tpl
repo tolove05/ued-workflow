@@ -69,7 +69,14 @@
         #if(serverInfo.status<1)
             <p style="color:red;">发生错误：<br>#{serverInfo.err.join('<br>')}</p>
         #else
-            <p style="color:green;">#{serverInfo.msg}</p>
+            <p style="color:green;">已经成功添加#{serverInfo.rows}个任务！</p>
+            #if(serverInfo.taskError.length>0)
+            <p>但是，有#{serverInfo.taskError.length} 条任务保存失败，具体原因如下：</p>
+                #each(item in serverInfo.taskError)
+                <p>#{item}</p>
+                #end
+                <p>已经将错误信息，保存在了通知列表处，您可以随时翻阅。</p>
+            #end
         #end
     #end
 </form>
