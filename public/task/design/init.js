@@ -8,33 +8,13 @@
 
 define(function (require, exports, module) {
 
-    //获取当前选中任务的详情
-    var id = window.location.href.match(/\/task\/([a-z0-9]{24})/);
-
-    seajs.use('/user/list?callback=define&t' + Date.now(), function (user) {
-        if (!id || !id[1]) return;
-
-        $.getJSON('/task/list/' + id[1], function (data) {
-            var li = '';
-            $(data.data).each(function (i, item) {
-
-                li += '<div class="ds-post-main"><div class="ds-avatar">' +
-                    '<a><img src="http://tp3.sinaimg.cn/1750584642/50/5612846168/1"></a>' +
-                    '</div>' +
-                    '<div class="ds-comment-body">' +
-                    '<a  class="user-name">' + user[item.user_id] + '</a>' + item.content +
-                    (item.files ? item.files.join('<br>') : '') +
-                    '</div></div>'
-            })
-            $('#list').html(li);
-        });
-    });
-
     require('./upload');
 
     require('./sidebar-init');
 
     require('./show-task-of-process');
+
+    require('./add-task-of-design-process');
 
     require('./add-task');
 

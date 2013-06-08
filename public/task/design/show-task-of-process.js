@@ -3,14 +3,15 @@
  * User: 松松
  * Date: 13-5-2
  * Time: 下午4:21
- * To change this template use File | Settings | File Templates.
+ * 显示任务的进度详情
  */
 
-define(function (require, exports, module) {
+define(function (exports, require, module) {
 
     $('#sidebar').on('mousedown', 'li', function (ev) {
         var data = ev.currentTarget.getAttribute('data-json');
         if (!data) return;
+        $(this).addClass('checked').siblings().removeClass('checked')
         showProcess(JSON.parse(data));
     });
 
@@ -23,7 +24,7 @@ define(function (require, exports, module) {
     function showProcess(data) {
         $('#container .task-title').html(data.name);
         $('#add-task-of-process-id').val(data._id);
-        $.getJSON('/task-of-design/process/' + data._id, function (res) {
+        $.getJSON('/task-of-design/process/' + data._id + '?r=' + Math.random(), function (res) {
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html)
         })

@@ -55,21 +55,4 @@ define(function (require, exports, module) {
         $.post("/add-task", $(form).serialize());
     });
 
-    var taskProcess = require('./show-task-of-process');
-
-    //保存任务进度时的触点
-    $(document).on('click', '.J-add-task-of-design-process ', function (ev) {
-        var form = ev.target.form;
-
-        $.post(form.action, $(form).serialize(), function (data) {
-            if (data.status === 1) {
-                var first = JSON.parse($('#sidebar li').eq(0).attr('data-json'));
-                if (first) taskProcess.showProcess(first)
-            } else {
-                alert('错误:' + data.msg)
-            }
-        });
-
-    });
-
 });
