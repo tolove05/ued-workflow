@@ -186,8 +186,11 @@ define(function (require, exports, module) {
         }
 
         function checkIsEmptyString(j) {
-            for (var i = 0; i < data.length; i++)  if (data[i][j] === '') return true;
-            return false;
+            var num = 0;
+            for (var i = 0; i < data.length; i++)  if (data[i][j] === '') {
+                num++;
+            }
+            return num === data.length;
         }
 
         return data;
