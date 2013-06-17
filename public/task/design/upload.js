@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-define(function (exports, require, module) {
+define(function (require, exports, module) {
 
     var $pic = $(document.forms['add-task-of-design-process'].elements['content']);
     var $prviewFile = $('#preview-file');

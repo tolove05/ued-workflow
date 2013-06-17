@@ -6,7 +6,7 @@
  * 显示任务的进度详情
  */
 
-define(function (exports, require, module) {
+define(function (require, exports, module) {
 
     $('#sidebar').on('mousedown', 'li', function (ev) {
         var data = ev.currentTarget.getAttribute('data-json');
