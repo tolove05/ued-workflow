@@ -10,6 +10,8 @@ define(function (require, exports, module) {
 
     require('/login/init');
 
+    require('/login/init');
+
     require('/user/init');
 
     //设计师

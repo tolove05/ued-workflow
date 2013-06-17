@@ -11,19 +11,18 @@ define(function (require, exports, module) {
     function getTaskList(user, filter) {
 
         $.getJSON('/task-of-design/list/' + user, function (res) {
-
             var li = document.createDocumentFragment();
-
             for (var i = 0; i < res.data.length; i++) {
                 var item = res.data[i];
                 var _li = document.createElement('li');
                 _li.innerHTML = item.name;
-                _li.setAttribute('data-json', JSON.stringify(item));
+                $(_li).data('data', item);
                 li.appendChild(_li);
             }
             $('#sidebar ul').html(li);
         });
     }
+
 
     exports.getTaskList = getTaskList;
 

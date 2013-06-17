@@ -9,10 +9,11 @@
 define(function (require, exports, module) {
 
     $('#sidebar').on('mousedown', 'li', function (ev) {
-        var data = ev.currentTarget.getAttribute('data-json');
-        if (!data) return;
-        $(this).addClass('checked').siblings().removeClass('checked')
-        showProcess(JSON.parse(data));
+        var $this = $(this);
+        $this.addClass('checked').siblings().removeClass('checked');
+        var data = $this.data('data');
+        window.location.hash = data._id;
+        showProcess(data);
     });
 
     var template = require('template/template/1.0.0/template-debug');

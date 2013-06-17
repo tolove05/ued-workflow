@@ -16,8 +16,9 @@ define(function (require, exports, module) {
 
         $.post(form.action, $(form).serialize(), function (data) {
             if (data.status === 1) {
-                var first = JSON.parse($('#sidebar li').eq(0).attr('data-json'));
-                if (first) taskProcess.showProcess(first)
+                taskProcess.showProcess($('#sidebar li.checked').data('data'));
+                form.reset();
+                $('#preview-file,#upload-list')
             } else {
                 alert('错误:' + data.msg)
             }
