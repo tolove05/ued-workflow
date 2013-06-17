@@ -1,22 +1,27 @@
 /**
  * Created with JetBrains WebStorm.
  * User: 松松
- * Date: 13-5-7
- * Time: 下午5:10
- * To change this template use File | Settings | File Templates.
+ * Date: 13-6-17
+ * Time: 下午4:21
+ * 添加子成员
  */
 define(function (require, exports, module) {
 
-    var tpl = require('./add-user.tpl');
+    var tpl = require('./add-child-members.tpl');
 
-    require('./add-user.css');
+    var template = require('template/template/1.0.0/template-debug');
+
+    require('./add-child-members.css');
+
+    var users = require('user/list?callback=define');
+    console.log(users, tpl)
 
     function login(cb) {
         KISSY.use("overlay", function (S, O) {
             var dialog = new O.Dialog({
                 width: 400,
-                headerContent: '添加用户',
-                bodyContent: tpl,
+                headerContent: '添加你的下属',
+                bodyContent: template(tpl, {users: users}),
                 mask: true,
                 zIndex: 9999,
                 align: {
@@ -46,21 +51,18 @@ define(function (require, exports, module) {
         if (exports.dialog && exports.dialog.get("visible")) exports.dialog.center();
     });
 
-    $(document).on('click', '.J-add-user', function () {
+    $(document).on('click', '.J-add-child-members', function () {
         show();
     });
 
-    $(document).on('click', '.J-add-user-post', function () {
+    $(document).on('click', '.J-add-child-members-post', function () {
         var form = this.form;
-        var name = form.elements.name.value;
-        var sha = require('sha');
-        var group = form.elements.group.value;
-        var pwd = sha.hex_sha512(form.elements.pwd.value);
-        $.post('/add-user', {
-            name: name,
-            pwd: pwd,
-            group: group
-        })
+        /*$.post('/add-child-members', {
+         name: name,
+         pwd: pwd,
+         group: group
+         })*/
+        console.log(form);
     });
 
 });

@@ -1,0 +1,9 @@
+#add-child-members-form th,
+#add-child-members-form td {
+    padding: .5em 0;
+}
+
+#add-child-members-form th {
+    text-align: right;
+    padding-right: 1em;
+}

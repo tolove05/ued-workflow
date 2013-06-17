@@ -4,6 +4,9 @@
 <a class="J-add-multiple-task-of-design-trigger">批量设计师任务单</a>
 #end
 #if(group.indexOf('管理员'\)>-1)
-<a class="add-user">添加用户</a>
+<a class="J-add-user">添加用户</a>
+#end
+#if(group.indexOf('设计组长'\)>-1)
+<a class="J-add-child-members">添加子成员</a>
 #end
 <a class="login-out">退出登陆</a>

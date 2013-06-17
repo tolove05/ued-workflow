@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <th>&nbsp;</th>
-            <td><input type="button" class="btn J-add-user" value="保存用户"></td>
+            <td><input type="button" class="btn J-add-user-post" value="保存用户"></td>
         </tr>
     </table>
 </form>

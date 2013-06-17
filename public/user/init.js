@@ -7,6 +7,10 @@
  */
 define(function (require, exports, module) {
 
+    //添加用户
     require('./add-user');
+
+    //添加子成员
+    require('./add-child-members');
 
 });

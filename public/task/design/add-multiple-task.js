@@ -171,6 +171,8 @@ define(function (require, exports, module) {
 
         excelData = filterEmptyCell(excelData);
 
+        if (!excelData) return;
+
         exports.dialog.set('bodyContent', template(tpl, {data: excelData, step: 2, sumLength: excelData.length}))
         exports.dialog.center();
     }
@@ -178,6 +180,7 @@ define(function (require, exports, module) {
     //过滤掉完全空的列
     function filterEmptyCell(data) {
         //获取最大列数
+        if (!data) return;
         for (var i = 0; i < data[0].length; i++) {
             if (checkIsEmptyString(i) === true) {
                 for (var j = 0; j < data.length; j++)   data[j].splice(i, 1);
