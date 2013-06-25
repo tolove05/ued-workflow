@@ -34,6 +34,69 @@ app.get('/user/list', function (req, res) {
     }
 });
 
+
+/*根据组名，返回该组所有成员*/
+app.get('/user/group', function (req, res) {
+
+    var group_name = req.query.group;
+
+
+    var result = {err: []};
+
+    if (typeof group_name !== 'string') {
+        result.status = -1;
+        result.err.push('需要组名');
+        res.json(result);
+        return;
+    }
+
+    var user = new DB.Collection(DB.Client, 'user');
+
+    user.find({group: {$in: [group_name]}}, {_id: 1, name: 1, group: 1}).toArray(function (err, docs) {
+        result.status = 1;
+        result.data = docs;
+        res.json(result);
+    });
+
+});
+
+//获取某个用户下的所有子用户
+app.get('/user/child', function (req, res) {
+
+    var senior_id = req.query.senior_id;
+
+    var result = {err: []};
+
+    if (typeof senior_id !== 'string') {
+        result.status = -1;
+        result.err.push('需要上级id方可查询子成员');
+        res.json(result);
+        return;
+    }
+
+    var user = new DB.Collection(DB.Client, 'user');
+
+    user.find({
+        senior: {
+            $elemMatch: {
+                _id: senior_id,
+                //只返回有效的上级（disable_id如果存在，表示该组员脱离了组长）
+                //disable_id表示执行脱离组长操作的用户id
+                disable_id: {
+                    $exists: false
+                }
+            }
+        }
+    }, {_id: 1, name: 1, group: 1}).toArray(function (err, docs) {
+            result.status = 1;
+            result.users = docs;
+            res.json(result);
+        });
+
+
+});
+
+
 exports.updateUser = user;
 
 DB.runCb(user);

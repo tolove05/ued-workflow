@@ -20,4 +20,7 @@ define(function (require, exports, module) {
 
     require('./add-multiple-task');
 
+    /*加载组长面板*/
+    require('./senior-panel');
+
 });

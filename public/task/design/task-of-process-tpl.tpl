@@ -7,7 +7,8 @@
         <div class="files">
             <ul>
                 #each(file,index,arr in item.files)
-                <li title="#{file}"><span>#{file.substring(file.indexOf('/')+1)}</span></li>
+                #run var fileName=file.substring(file.indexOf('/')+1);
+                <li title="#{fileName}"><span><a href="#" download="#{fileName}">#{fileName}</a></span></li>
                 #end
             </ul>
         </div>
