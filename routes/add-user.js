@@ -21,6 +21,7 @@ app.post('/add-user', function (req, res) {
     var serverInfo = {err: []};
 
     if (!require('./login').isLogin(req)) {
+        serverInfo.status = 0;
         serverInfo.err.push('请先登陆')
         res.json(serverInfo);
         return;
@@ -34,6 +35,7 @@ app.post('/add-user', function (req, res) {
     };
 
     if (!user.name || !user.pwd || !user.group || !/^[a-z0-9]{128}$/.test(user.pwd)) {
+        serverInfo.status = -1;
         serverInfo.err.push('参数错误');
         res.json(serverInfo);
         return;

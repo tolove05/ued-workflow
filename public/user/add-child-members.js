@@ -14,7 +14,6 @@ define(function (require, exports, module) {
     require('./add-child-members.css');
 
     var users = require('user/list?callback=define');
-    console.log(users, tpl)
 
     function login(cb) {
         KISSY.use("overlay", function (S, O) {
@@ -57,11 +56,13 @@ define(function (require, exports, module) {
 
     $(document).on('click', '.J-add-child-members-post', function () {
         var form = this.form;
-        /*$.post('/add-child-members', {
-         name: name,
-         pwd: pwd,
-         group: group
-         })*/
+        $.post('/add-child-members', {
+            name: form.elements['name'].value
+        },function (data) {
+            console.log(data)
+        }, 'json').error(function () {
+               // alert('遇到错误');
+            });
         console.log(form);
     });
 

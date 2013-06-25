@@ -21,6 +21,8 @@ require('./add-task-design');
 
 require('./add-user');
 
+require('./add-child-members');
+
 require('./login');
 
 require('./task-of-design');
