@@ -11,6 +11,7 @@ app.get('/', function (req, res) {
     res.render('index', {
         title: 'Express',
         name: req.session.name,
+        group: req.session.group,
         isLogin: require('./login').isLogin(req),
         user: require('user').user
     });

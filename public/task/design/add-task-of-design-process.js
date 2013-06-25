@@ -14,6 +14,11 @@ define(function (require, exports, module) {
     $(document).on('click', '.J-add-task-of-design-process', function (ev) {
         var form = ev.target.form;
 
+        if (form.elements['type'].value == "null") {
+            alert('您必须选择操作类型');
+            return;
+        }
+
         $.post(form.action, $(form).serialize(), function (data) {
             if (data.status === 1) {
                 taskProcess.showProcess($('#sidebar li.checked').data('data'));

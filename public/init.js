@@ -8,13 +8,13 @@
 
 define(function (require, exports, module) {
 
-    require('/login/init');
+
+    if (window["page_is_login"] === true) {
+        require.async('/user/init');
+        //设计师
+        require.async('/task/design/init');
+    }
 
     require('/login/init');
-
-    require('/user/init');
-
-    //设计师
-    require('/task/design/init');
 
 });

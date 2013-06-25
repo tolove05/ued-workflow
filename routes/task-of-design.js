@@ -24,6 +24,9 @@ app.get(/^\/task-of-design\/([a-z0-9]{24})$/, function (req, res) {
         res.end('请先登陆');
         return;
     }
+    elseif(1)
+    {
+    }
 
     var task = new DB.Collection(DB.Client, 'task-of-design');
 
@@ -56,9 +59,11 @@ app.post('/add-task-of-design-process', function (req, res) {
 
     var body = req.body;
     var data = {
-        //任务意见
+        //类型
+        type: parseInt(body.type, 10),
+        //意见
         content: trim(body.content),
-        //任务id
+        //针对的任务
         task_id: trim(body._id),
         //谁发表的意见
         user_id: req.session._id,
@@ -69,7 +74,14 @@ app.post('/add-task-of-design-process', function (req, res) {
         data.files = body.files instanceof Array ? body.files : [body.files];
     }
 
-    if (!data.content || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
+    /*
+     1:普通发表回复
+     2:请求上级审核
+     3:返回修改
+     4:通过
+     5:关闭此需求
+     */
+    if (isNaN(data.type) || data.type < 0 || !data.content || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
         res.end('{"status":-1,"msg":"参数验证不通过"}');
         return;
     }
