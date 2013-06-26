@@ -59,9 +59,12 @@ define(function (require, exports, module) {
         $.post('/add-child-members', {
             name: form.elements['name'].value
         },function (data) {
-            console.log(data)
+            if (data.err.length > 0) {
+                exports.dialog.get('contentEl').one('.tips').html(data.err.join(','))
+            } else {
+                exports.dialog.get('contentEl').one('.tips').html(data.msg)
+            }
         }, 'json').error(function () {
-                console.log(exports.dialog)
             });
     });
 
