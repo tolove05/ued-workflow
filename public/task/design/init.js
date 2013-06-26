@@ -10,7 +10,7 @@ define(function (require, exports, module) {
 
     require('./upload');
 
-    require('./sidebar-init');
+    require('./show-task-list');
 
     require('./show-task-of-process');
 

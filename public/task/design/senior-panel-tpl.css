@@ -5,6 +5,7 @@
     height: 200px;
     background: #fff;
     padding: 1em;
-    border: solid 1px green;
+    border: solid 1px #444;
+    display: none;
 }
 

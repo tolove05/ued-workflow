@@ -7,10 +7,11 @@ html
         link(rel="stylesheet",href="/global/global.css")
     body
         block content
-        #navigation
-            a.current 自己
-            a.J-group-panel-triggers 组长
-            a 业务方
+        -if(isLogin)
+            #navigation
+                a.current
+                    span.J-user-triggers #{name}
+                a.J-group-panel-triggers 组长
         #senior
 
         script(src="/global/jquery-2.0.0.min.js")

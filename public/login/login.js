@@ -73,7 +73,7 @@ define(function (require, exports, module) {
                     exports.dialog.hide();
                     loginSuccess(data);
                     //更新左侧的任务列表
-                    require('./../task/design/sidebar-init').getTaskList(data.name, {});
+                    require('./../task/design/show-task-list').getTaskList(data.name, {});
                 } else {
                     alert('登陆失败')
                 }
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
         $.getJSON('/check-login', function (data) {
             if (data.status === 1) {
                 loginSuccess(data);
-                require('./../task/design/sidebar-init').getTaskList(data.name, {});
+                require('./../task/design/show-task-list').getTaskList(data.name, {});
             } else {
                 loginFail();
             }

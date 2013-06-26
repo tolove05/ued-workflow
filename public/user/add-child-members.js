@@ -61,9 +61,8 @@ define(function (require, exports, module) {
         },function (data) {
             console.log(data)
         }, 'json').error(function () {
-               // alert('遇到错误');
+                console.log(exports.dialog)
             });
-        console.log(form);
     });
 
 });

@@ -10,6 +10,8 @@ define(function (require, exports, module) {
 
     var template = require('template/template/1.0.0/template-debug');
 
+    var $document = $(document);
+
     var tpl = require('./senior-panel-tpl.tpl');
 
     require('./senior-panel-tpl.css');
@@ -24,6 +26,7 @@ define(function (require, exports, module) {
         $.get('/user/group', {
             group: "设计组长"
         }, function (data) {
+            $senior.show();
             group = data.data;
             $senior.html(template(tpl, {data: group, step: 1}));
         })
@@ -41,5 +44,20 @@ define(function (require, exports, module) {
         });
     });
 
+    //当点击某个成员，返回该成员的所有任务列表
+    var taskList = require('./show-task-list');
 
+    $document.on('click', '.J-user-triggers', function () {
+        taskList.getTaskList($(this).text());
+    });
+
+    $document.on('click', function (ev) {
+        var $target = $(ev.target);
+        if ($target[0].id === 'senior' || $target.parents('#senior').length > 0) {
+            return;
+        } else {
+            $senior.hide();
+        }
+
+    });
 });

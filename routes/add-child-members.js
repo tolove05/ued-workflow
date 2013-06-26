@@ -62,26 +62,44 @@ app.post('/add-child-members', function (req, res) {
                 return;
             }
 
-
-            //检测是否已经重复添加过权限了
-
+            //检查角色是否为设计师，只有设计师才能被设计组长添加为下属
             collection.findOne({
                 _id: DB.mongodb.ObjectID(child_id),
-                senior: {
-                    $elemMatch: {
-                        _id: req.session._id,
-                        //查询当前是否已经有权限了
-                        disable_id: {
-                            $exists: false
+                group: {
+                    $in: ["设计师"]
+                }
+            }, { group: 1 }, function (err, result) {
+
+                if (result === null) {
+                    serverInfo.status = -4;
+                    serverInfo.err.push('该成员不属于设计师');
+                    res.json(serverInfo);
+                    return;
+                }
+
+                //防止该成员被重复指定上级
+                collection.findOne({
+                    _id: DB.mongodb.ObjectID(child_id),
+                    senior: {
+                        $elemMatch: {
+                            _id: req.session._id,
+                            //查询当前是否已经有权限了
+                            disable_id: {
+                                $exists: false
+                            }
                         }
                     }
-                }
-            }, { }, function (err, result) {
-                if (result !== null) {
-                    serverInfo.status = -4;
-                    serverInfo.err.push('您之前已经添加过了！')
-                    res.json(serverInfo);
-                } else {
+                }, {
+                    group: 1
+                }, function (err, result) {
+
+                    if (result !== null) {
+                        serverInfo.status = -5;
+                        serverInfo.err.push('您之前已经添加过了！');
+                        res.json(serverInfo);
+                        return;
+                    }
+
                     collection.update({
                         _id: DB.mongodb.ObjectID(child_id)
                     }, {
@@ -92,13 +110,13 @@ app.post('/add-child-members', function (req, res) {
                                 enable_time: Date.now()
                             }
                         }}, {}, function (err, result) {
-                        console.log(err, result);
                         serverInfo.status = 1;
                         serverInfo.msg = '添加成功';
                         res.json(serverInfo);
                     });
-                }
-            });
+                });
+            })
+
 
         } else {
             serverInfo.status = -1;
