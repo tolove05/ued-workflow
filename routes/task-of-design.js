@@ -101,10 +101,74 @@ app.post('/add-task-of-design-process', function (req, res) {
 
 app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
 
-    var _id = req.params[0];
+    var serverResult = {
+        err: []
+    };
+    try {
+        var _id = DB.mongodb.ObjectID(req.params[0]);
+    } catch (e) {
+        serverResult.err.push('参数不合法');
+        serverResult.status = -1;
+        res.json(serverResult);
+        return;
+    }
 
     var list = new DB.Collection(DB.Client, 'task-of-design-process');
-    list.find({task_id: _id}).sort([
+
+    var task = new DB.Collection(DB.Client, 'task-of-design');
+
+    //TODO:查询当前用户与该任务之前的权限关系
+    //首先查询出该任务的实现者
+    task.findOne({
+        _id: _id
+    }, {_id: 0, to: 1}, function (err, result) {
+        if (result === null) {
+            serverResult.status = -2;
+            serverResult.err.push('任务不存在');
+            res.json(serverResult);
+            return;
+        }
+
+        //查询当前登陆用户，是否为该任务执行者的上级
+        //执行该步骤后，才能判断出当前登陆者针对该任务所拥有的权限
+        var user = new DB.Collection(DB.Client, 'user');
+        user.findOne({
+            name: result.to,
+            senior: {
+                $elemMatch: {
+                    _id: req.session._id,
+                    //查询当前登陆者是否为该任务执行者的上级
+                    disable_id: {
+                        $exists: false
+                    }
+                }
+            }
+        }, {
+            _id: 0,
+            group: 1
+        }, function (err, result) {
+            console.log(err, result);
+            if (result !== null) {
+                //表明当前登陆者，是该任务执行者的上级
+                console.log('你可以审核该任务');
+
+            } else {
+                //否则，查询是否拥有[设计审核]组的权限 ，[设计审核]组，拥有审核组长和组长成员的作品的权限
+                if (req.session.group.indexOf('设计审核') > -1) {
+                    //表明拥有设计审核的权限
+                    console.log('你属于[设计审核]，拥有审核组长和组员的权利');
+                } else {
+                    console.log('你只能回复该作品');
+                }
+            }
+
+
+        })
+
+    });
+
+
+    list.find({task_id: req.params[0]}).sort([
             ['time_stamp', 1]
         ]).toArray(function (err, docs) {
             res.end(JSON.stringify({data: docs}, undefined, '    '))

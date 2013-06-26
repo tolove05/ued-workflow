@@ -26,6 +26,10 @@ define(function (require, exports, module) {
         $('#container .task-title').html(data.name);
         $('#add-task-of-process-id').val(data._id);
         $.getJSON('/task-of-design/process/' + data._id + '?r=' + Math.random(), function (res) {
+
+
+            //
+
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html)
         })
