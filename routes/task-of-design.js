@@ -117,11 +117,11 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
 
     var task = new DB.Collection(DB.Client, 'task-of-design');
 
-    //TODO:查询当前用户与该任务之前的权限关系
     //首先查询出该任务的实现者
     task.findOne({
         _id: _id
-    }, {_id: 0, to: 1}, function (err, result) {
+    }, {_id: 0, to: 1, from: 1}, function (err, result) {
+
         if (result === null) {
             serverResult.status = -2;
             serverResult.err.push('任务不存在');
@@ -132,48 +132,60 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
         //查询当前登陆用户，是否为该任务执行者的上级
         //执行该步骤后，才能判断出当前登陆者针对该任务所拥有的权限
         var user = new DB.Collection(DB.Client, 'user');
+
+        var task_user_name = result.to;
         user.findOne({
-            name: result.to,
-            senior: {
-                $elemMatch: {
-                    _id: req.session._id,
-                    //查询当前登陆者是否为该任务执行者的上级
-                    disable_id: {
-                        $exists: false
+            name: task_user_name
+        }, {_id: 1, group: 1, name: 1}, function (err, result) {
+
+            //当前任务是否为自己的任务
+            var isOwn = result._id.toString() === req.session._id;
+
+            if (result === null) {
+                serverResult.status = -3;
+                serverResult.err.push('该用户尚未完成初次登陆，请通知对方对方完成第一次登陆');
+                res.json(serverResult);
+                return;
+            }
+
+            var taskUserGroup = result.group;
+
+            //开始查询当前登陆用户和该任务单执行者的权限关系
+            //查询当前用户
+
+            //查询指派任务的用户
+            user.findOne({
+                name: task_user_name,
+                senior: {
+                    $elemMatch: {
+                        _id: req.session._id,
+                        disable_id: {
+                            $exists: false
+                        }
                     }
                 }
-            }
-        }, {
-            _id: 0,
-            group: 1
-        }, function (err, result) {
-            console.log(err, result);
-            if (result !== null) {
-                //表明当前登陆者，是该任务执行者的上级
-                console.log('你可以审核该任务');
+            }, {
+                _id: 0,
+                group: 1
+            }, function (err, result) {
 
-            } else {
-                //否则，查询是否拥有[设计审核]组的权限 ，[设计审核]组，拥有审核组长和组长成员的作品的权限
-                if (req.session.group.indexOf('设计审核') > -1) {
-                    //表明拥有设计审核的权限
-                    console.log('你属于[设计审核]，拥有审核组长和组员的权利');
-                } else {
-                    console.log('你只能回复该作品');
-                }
-            }
+                // 如果是上级或者属于[设计审核]组
+                var isSenior = result !== null || req.session.group.indexOf('设计审核') > -1;
 
-
-        })
-
-    });
-
-
-    list.find({task_id: req.params[0]}).sort([
-            ['time_stamp', 1]
-        ]).toArray(function (err, docs) {
-            res.end(JSON.stringify({data: docs}, undefined, '    '))
+                list.find({task_id: req.params[0]}).sort([
+                        ['time_stamp', 1]
+                    ]).toArray(function (err, docs) {
+                        res.json({
+                            data: docs,
+                            isSenior: isSenior,
+                            //是否该任务的拥有者
+                            isOwn: isOwn,
+                            taskUserGroup: taskUserGroup
+                        })
+                    })
+            })
         });
-
+    });
 });
 
 
@@ -196,9 +208,9 @@ app.get(/^\/task-of-design\/list\/(\S+)/, function (req, res) {
             ['time_stamp', 1]
         ]).toArray(function (err, docs) {
             if (req.query.callback) {
-                res.end(req.query.callback + '(' + JSON.stringify({data: docs}, undefined, '    ') + ');')
+                res.end(req.query.callback + '(' + JSON.stringify({data: docs}, undefined, '    ') + ');');
             } else {
-                res.end(JSON.stringify({data: docs}, undefined, '    '))
+                res.end(JSON.stringify({data: docs}, undefined, '    '));
             }
         });
 

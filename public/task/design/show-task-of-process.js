@@ -31,12 +31,24 @@ define(function (require, exports, module) {
             //
 
             var html = template(tpl, {data: res.data, user: user});
-            $('#content').html(html)
+            $('#content').html(html);
+
+            exports.showPermissions(res);
         })
 
     }
 
     exports.showProcess = showProcess;
+
+    //相应改变当前登陆者，所拥有的权限
+    exports.showPermissions = function (data) {
+        var template = require('template/template/1.0.0/template-debug');
+        var tpl = require('./show-task-list.tpl');
+        var form = document.forms['add-task-of-design-process'];
+        var select = form.elements['type'];
+        select.innerHTML = template(tpl, data)
+    }
+
 
 });
 

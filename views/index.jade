@@ -17,15 +17,6 @@ block content
                 div
                     pre
                     select(name="type")
-                        option(value="null") --针对该任务的操作--
-                            option(value="1") 发表回复
-                        -if(group.indexOf('设计审核')>-1)
-                            option(value="3") 返回修改
-                            option(value="4") 通过
-                            option(value="5") 删除这个任务
-                        -else if (group.indexOf('设计师')>-1 || group.indexOf('设计组长')>-1)
-                            option(value="2") 请求上级审核
-
                 input#add-task-of-process-id(type="hidden",name="_id",value="")
                 textarea(type="text",name="content")
                 label(for="upload-file-field") 插入附件
