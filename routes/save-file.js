@@ -26,7 +26,6 @@ exports.saveFile = function (req, res) {
     var tempFile = [];
 
     var serverInfo = {
-        files: [],
         err: []
     };
 
@@ -65,24 +64,23 @@ exports.saveFile = function (req, res) {
 
     var fileInfo = {};
     //生成一一对应的文件ID
-    files.fileId = new ObjectID().toString();
+    files.fileId = new ObjectID();
 
     fileInfo.name = files.name;
     fileInfo.path = path.basename(files.path);
-
 
     var options = {
         chunk_size: 102400,
         metadata: { }
     };
 
-    var fileId = files.fileId;
-
     //如果上传的是图片
     var extName = path.extname(files.name).substring(1).toLowerCase();
     if (extName === '') extName = 'unknown';
 
     serverInfo.origin_name = files.name;
+    serverInfo.size = files.size;
+    serverInfo._id = files.fileId;
 
     console.log('文件名为：' + files.name, '文件扩展名是：' + extName);
 
@@ -102,23 +100,25 @@ exports.saveFile = function (req, res) {
                     console.log('有效的图片文件，原始扩展名' + extName, '真实扩展名' + files.format);
 
                     options.metadata.origin_name = files.name.substring(0, files.name.lastIndexOf('.') + 1) + files.format;
-                    options.ext_name = files.format;
+                    options.metadata.ext = files.format;
 
                     options.metadata.width = files.width;
                     options.metadata.owner = req.session._id;
                     options.metadata.height = files.height;
 
+                    //将meta信息发送会浏览器端
+                    serverInfo.metadata = {
+                        width: files.width,
+                        height: files.height,
+                        ext: files.format
+                    };
+
                     //保存原始文件
-                    var originFileName = fileId + '.' + files.format
+                    var originFileName = files.fileId;
                     var gs = new GridStore(DB.dbServer, originFileName, originFileName, "w", options);
                     gs.writeFile(files.path, function (err) {
                         if (!err) {
-                            serverInfo.file = originFileName;
-                            if (files.format === 'psd') {
-                                convertAndSaveJPG(files, options, fileId, originFileName);
-                            } else {
-                                end();
-                            }
+                            end();
                         } else {
                             serverInfo.err.push('无法保存' + files.name);
                             end();
@@ -144,7 +144,7 @@ exports.saveFile = function (req, res) {
     function saveOriginFile() {
         console.log('非图片格式，直接进行保存，文件类型是：' + extName);
         options.metadata.origin_name = files.name;
-        var fileName = fileId + '.' + extName;
+        var fileName = files.fileId;
         var gs = new GridStore(DB.dbServer, fileName, fileName, "w", options);
         gs.writeFile(files.path, function (err) {
             if (!err) {
@@ -157,39 +157,7 @@ exports.saveFile = function (req, res) {
             end();
         });
     }
-
-    function convertAndSaveJPG(cur, options, fileId, originFileName) {
-        //转换为JPG格式
-        console.log('将' + cur.name + '转换为jpg');
-        var jpgPath = path.join(path.dirname(cur.path), fileId + '.jpg');
-        options.content_type = 'image/jpeg';
-        options.metadata.origin_file_id = originFileName;
-        options.metadata.owner = req.session._id;
-        im.convert([cur.path + '[0]', '-quality', '0.8', jpgPath], function (err) {
-            if (!err) {
-                console.log(cur.name + '已经成功转换为jpg');
-                tempFile.push(jpgPath);
-                fileId = fileId + '.jpg';
-                var gs = new GridStore(DB.dbServer, fileId, fileId, "w", options);
-                gs.writeFile(jpgPath, function (err) {
-                    if (!err) {
-                        console.log(cur.name + '的jpg格式已经入库');
-                        cur.path = jpgPath;
-                        serverInfo.files.push(fileId)
-                    } else {
-                        serverInfo.err.push('转换的jpg文件无法保存到数据库中');
-                        console.log(cur.name + '无法入库');
-                    }
-                    end();
-                });
-            } else {
-                serverInfo.err.push('转换到jpg失败');
-                end();
-            }
-        });
-
-    }
-}
+};
 
 var allowFile = {
     'jpg': 'image/jpg',

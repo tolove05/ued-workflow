@@ -5,12 +5,16 @@
         <div class="content">#{item.content}</div>
         #if(item.files)
         <div class="files">
-            <ul>
+            <table class="table table-condensed" style="font-size: 12px">
                 #each(file,index,arr in item.files)
                 #run var fileName=file.substring(file.indexOf('/')+1);
-                <li title="#{fileName}"><span><a href="#" download="#{fileName}">#{fileName}</a></span></li>
+                <tr>
+                    <td>#{fileName}</td>
+                    <td>#{item.files}</td>
+                    <td><a href="#{fileName}"></a></td>
+                </tr>
                 #end
-            </ul>
+            </table>
         </div>
         #end
     </dd>

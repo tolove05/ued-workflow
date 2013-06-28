@@ -77,12 +77,11 @@ define(function (require, exports, module) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 $li.data('responseText', xhr.responseText);
-                var serverInfo = {};
                 try {
                     var serverInfo = JSON.parse(xhr.responseText);
                     insertFile(serverInfo, file.name);
                 } catch (e) {
-                    insertFile(serverInfo, file.name);
+
                 }
             }
         };
@@ -118,6 +117,8 @@ define(function (require, exports, module) {
     function insertFile(serverInfo, fileName) {
         var tpl = '';
         if (serverInfo.file) {
+
+            console.log(serverInfo);
             tpl = '<div class="file"><div class="file-name">' +
                 '<input type="hidden" name="files" value="' + serverInfo.file + '/' + serverInfo.origin_name + '">' +
                 '' + fileName + '</div></div>';

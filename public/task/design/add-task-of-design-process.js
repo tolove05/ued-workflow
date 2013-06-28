@@ -21,7 +21,7 @@ define(function (require, exports, module) {
 
         $.post(form.action, $(form).serialize(), function (data) {
             if (data.status === 1) {
-                taskProcess.showProcess($('#sidebar li.checked').data('data'));
+                taskProcess.showProcess($('#sidebar a.J-task-trigger.active'));
                 form.reset();
                 $('#preview-file,#upload-list')
             } else {
