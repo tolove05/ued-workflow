@@ -16,6 +16,9 @@ define(function (require, exports, module) {
         e.preventDefault();
     });
 
+    //存储上传成功的文件
+    var uploadList = [];
+
     //拖来拖去 , 一定要注意dragover事件一定要清除默认事件
     //不然会无法触发后面的drop事件
     $pic.bind('dragover', function (e) {
@@ -57,12 +60,13 @@ define(function (require, exports, module) {
 
         var id = 'upload-' + Date.now() + '-' + parseInt(Math.random() * 1000000000, 10);
 
-        $('<li id="' + id + '">' +
-            file.name +
-            '<b class="process"></b>' +
-            '<b class="response"></b>' +
-            '<button class="btn btn-mini btn-danger" data-action="delete" type="button">删除这个文件</button>' +
-            '</li>' +
+        $('<div id="' + id + '" class="progress">' +
+            '<div class="progress-bar progress-bar-info">' +
+            '<span class="J-tip tip"></span>' +
+            '<span class="J-file-name">' + file.name + '</span>' +
+            '<span class="J-process process"></span>' +
+            '</div>' +
+            '</div>' +
             '').appendTo($('#upload-list'));
         var $li = $('#' + id);
         var formData = new FormData();
@@ -79,7 +83,7 @@ define(function (require, exports, module) {
                 $li.data('responseText', xhr.responseText);
                 try {
                     var serverInfo = JSON.parse(xhr.responseText);
-                    insertFile(serverInfo, file.name);
+                    insertFile(serverInfo, $li);
                 } catch (e) {
 
                 }
@@ -89,7 +93,13 @@ define(function (require, exports, module) {
         xhr.open('post', url);
 
         xhr.upload.addEventListener("progress", function (evt) {
-            $li.find('.process').html(Math.round(evt.loaded * 100 / evt.total) + '%');
+            var left = Math.round(evt.loaded * 100 / evt.total) + '%';
+            $li.find('.J-process').html(left);
+            $li.find('.progress-bar').width(left);
+            if (left === '100%') {
+                $li.find('.J-tip').html('服务器保存数据中.....');
+                $li.addClass('progress-striped active');
+            }
         }, false);
 
         xhr.send(formData);
@@ -99,7 +109,7 @@ define(function (require, exports, module) {
 
     //当点击删除时，向服务器发送消息，删除掉上传文件所使用的缓存
     $('#upload-list').on('click', 'li', function (ev) {
-        var $li = $(ev.currentTarget);
+        var $file = $(ev.currentTarget);
     });
 
     var $uploadFileField = $('#upload-file-field');
@@ -114,27 +124,25 @@ define(function (require, exports, module) {
         uploadImg();
     });
 
-    function insertFile(serverInfo, fileName) {
+    function insertFile(serverInfo, $li) {
         var tpl = '';
-        if (serverInfo.file) {
-
-            console.log(serverInfo);
-            tpl = '<div class="file"><div class="file-name">' +
-                '<input type="hidden" name="files" value="' + serverInfo.file + '/' + serverInfo.origin_name + '">' +
-                '' + fileName + '</div></div>';
+        if (serverInfo._id) {
+            $li.find('.J-tip').html('上传成功');
+            uploadList.push(serverInfo);
+            $li.removeClass('progress-striped active').find('.progress-bar').removeClass('progress-bar-info').addClass('progress-bar-success')
         } else {
-            tpl = '<div class="file"><div class="file-name">' +
-                '<span style="color:red;font-weight:bold;">上传失败：' + (function () {
-                if (serverInfo.err) {
-                    serverInfo.err.join('，')
-                } else {
-                    return '未知错误';
-                }
-            })() + '</span>' +
-                fileName + '</div></div>';
+            $li.find('.J-tip').html('上传失败，失败原因：' + serverInfo.err.join(','));
+            $li.removeClass('progress-striped active').find('.progress-bar').removeClass('progress-bar-info').addClass('progress-bar-danger')
         }
 
         $prviewFile.append($(tpl));
     }
+
+    exports.getUploadList = function () {
+
+    };
+    exports.getUploadList = function () {
+
+    };
 
 });

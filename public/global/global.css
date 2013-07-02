@@ -77,13 +77,57 @@
     margin-right: 12px;
 }
 
-form[name=add-task-of-design-process] {
-    width: 500px;
+h1 {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 0 !important;
 }
 
-h1{
-    visibility: hidden;
-    height: 0px;
+#upload-list {
+    font-size: 12px;
+    font-family: simsun, sans-serif;
+    margin-bottom: 1em;
+}
+
+#upload-list .file {
+    display: inline-block;
+    width: 24%;
+    background: #eee;
+}
+
+label.upload-file-field-label {
+    margin: 1em auto;
+    font-weight: normal;
+    color: blue;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+input#upload-file-field {
+    display: none;
+}
+
+form[name=add-task-of-design-process] select.type {
+    margin: 0 1em 0 0;
+}
+
+form[name=add-task-of-design-process] .progress {
+    height: auto;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+form[name=add-task-of-design-process] .progress-bar {
+    text-align: left;
+    text-indent: 1em;
+    padding: 2px 0;
+    text-overflow: ellipsis;
     overflow: hidden;
-    margin-bottom: 0!important;
+    white-space: nowrap;
+}
+
+form[name=add-task-of-design-process] .progress-bar span {
+    margin-right: 1em;
 }

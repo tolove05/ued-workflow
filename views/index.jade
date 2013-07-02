@@ -16,11 +16,11 @@ block content
                     select(name="type")
                 input#add-task-of-process-id(type="hidden",name="_id",value="")
                 textarea(type="text",name="content")
-                label(for="upload-file-field") 插入附件
+                label.upload-file-field-label(for="upload-file-field") 插入附件
                 input#upload-file-field(type="file",multiple="multiple")
                 #p
                 #preview-file
                 #upload-list
-                button.btn.J-add-task-of-design-process(type="button") 发表意见
+                button.btn.btn-primary.J-add-task-of-design-process(type="button") 提交
     script
         var page_is_login=#{isLogin};

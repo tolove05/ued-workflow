@@ -78,10 +78,6 @@ exports.saveFile = function (req, res) {
     var extName = path.extname(files.name).substring(1).toLowerCase();
     if (extName === '') extName = 'unknown';
 
-    serverInfo.origin_name = files.name;
-    serverInfo.size = files.size;
-    serverInfo._id = files.fileId;
-
     console.log('文件名为：' + files.name, '文件扩展名是：' + extName);
 
     if (allowFile[extName]) {
@@ -137,6 +133,12 @@ exports.saveFile = function (req, res) {
     }
 
     function end() {
+        if (serverInfo.err.length < 1) {
+            delete serverInfo.err;
+            serverInfo.origin_name = files.name;
+            serverInfo.size = files.size;
+            serverInfo._id = files.fileId;
+        }
         res.end(JSON.stringify(serverInfo, undefined, '    '));
         unlink(tempFile);
     }
@@ -149,7 +151,6 @@ exports.saveFile = function (req, res) {
         gs.writeFile(files.path, function (err) {
             if (!err) {
                 console.log(files.name + '保存成功');
-                serverInfo.file = fileName;
             } else {
                 serverInfo.err.push(fileName + '无法保存');
                 console.log(files.name + '保存失败', err);
