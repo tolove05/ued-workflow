@@ -50,10 +50,14 @@ function trim(s) {
 //保存任务的进度
 app.post('/add-task-of-design-process', function (req, res) {
 
-    res.header('content-type', 'application/json;charset=utf-8');
+    var serverResult = {
+        err: []
+    };
 
     if (!req.session._id) {
-        res.end('{"status":0,"msg":"需要登陆才能完成此操作"}');
+        serverResult.err.push('需要登陆才能完成此操作');
+        serverResult.status = 0;
+        res.json(serverResult);
         return;
     }
 
@@ -70,8 +74,12 @@ app.post('/add-task-of-design-process', function (req, res) {
         time_stamp: Date.now()
     };
 
+    if (data.content === undefined) {
+        delete data.content;
+    }
+
     if (body.files) {
-        data.files = body.files instanceof Array ? body.files : [body.files];
+        data.files = body.files
     }
 
     /*
@@ -81,8 +89,10 @@ app.post('/add-task-of-design-process', function (req, res) {
      4:通过
      5:关闭此需求
      */
-    if (isNaN(data.type) || data.type < 0 || !data.content || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
-        res.end('{"status":-1,"msg":"参数验证不通过"}');
+    if (isNaN(data.type) || data.type < 0 || !data.task_id || !/^[a-z0-9]{24}$/.test(data.task_id)) {
+        serverResult.err.push('参数验证不通过');
+        serverResult.status = -1;
+        res.json(serverResult);
         return;
     }
 
@@ -90,10 +100,13 @@ app.post('/add-task-of-design-process', function (req, res) {
 
     task.insert(data, {safe: true}, function (err, docs) {
         if (!err && docs) {
-            res.end(JSON.stringify({status: 1, docs: docs[0]}));
+            serverResult.status = 1;
+            serverResult.docs = docs[0];
         } else {
-            res.end(JSON.stringify({status: -2, msg: err}));
+            serverResult.status = -2;
+            serverResult.err.push('未能添加任务进度')
         }
+        res.json(serverResult);
     });
 
 });
@@ -104,6 +117,15 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
     var serverResult = {
         err: []
     };
+
+    if (!req.session._id) {
+        serverResult.err.push('xu');
+        serverResult.status = 0;
+        res.json(serverResult);
+        return;
+    }
+
+
     try {
         var _id = DB.mongodb.ObjectID(req.params[0]);
     } catch (e) {

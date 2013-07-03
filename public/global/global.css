@@ -66,7 +66,7 @@
 }
 
 #sidebar {
-    position: fixed;
+    position: absolute;
     width: 230px;
     left: 0;
     top: 50px;
@@ -121,13 +121,16 @@ form[name=add-task-of-design-process] .progress {
 
 form[name=add-task-of-design-process] .progress-bar {
     text-align: left;
-    text-indent: 1em;
     padding: 2px 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
     white-space: nowrap;
+    text-shadow: none;
+    color: #000;
 }
 
 form[name=add-task-of-design-process] .progress-bar span {
-    margin-right: 1em;
+    margin-left: 1em;
+}
+
+#sidebar a.list-group-item{
+    font-size: 12px;
 }

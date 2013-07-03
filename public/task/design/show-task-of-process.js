@@ -26,13 +26,10 @@ define(function (require, exports, module) {
         $('#container').find('.task-title').html($this.text());
         $('#add-task-of-process-id').val(_id);
         $.getJSON('/task-of-design/process/' + _id + '?r=' + Math.random(), function (res) {
-            //
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html);
-
             exports.showPermissions(res);
         })
-
     }
 
     exports.showProcess = showProcess;
