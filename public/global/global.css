@@ -136,3 +136,9 @@ form[name=add-task-of-design-process] .progress-bar span {
 #sidebar a.list-group-item {
     font-size: 12px;
 }
+
+#navigation{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}

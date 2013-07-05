@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         var form = document.forms['add-task-of-design-process'];
         var select = form.elements['type'];
         select.innerHTML = template(tpl, data)
+        $(document.forms['add-task-of-design-process']).show();
     };
 });
 
