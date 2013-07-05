@@ -8,11 +8,12 @@
 
 define(function (require, exports, module) {
 
+    var urlRule = /^#task\//;
+
     $('#sidebar').on('mousedown', '.J-task-trigger', function (ev) {
         var $this = $(this);
-        $this.addClass('active').siblings().removeClass('active');
-        window.location.hash = $this.data('_id');
-        showProcess($this);
+        window.location.hash = 'task/' + JSON.stringify({_id: $this.data('_id')});
+        showProcess();
     });
 
     var template = require('template/template/1.0.0/template-debug');
@@ -21,15 +22,20 @@ define(function (require, exports, module) {
 
     var tpl = require('./task-of-process-tpl.tpl');
 
-    function showProcess($this) {
-        var _id = $this.data('_id');
-        $('#container').find('.task-title').html($this.text());
+    function showProcess() {
+        try {
+            var param = JSON.parse(window.location.hash.replace(urlRule, ''));
+        } catch (e) {
+            return;
+        }
+        var _id = param._id;
         $('#add-task-of-process-id').val(_id);
         $.getJSON('/task-of-design/process/' + _id + '?r=' + Math.random(), function (res) {
             var html = template(tpl, {data: res.data, user: user});
             $('#content').html(html);
             exports.showPermissions(res);
-        })
+        });
+        $('div.J-task-list a').removeClass('active').filter('[data-_id=' + _id + ']').addClass('active');
     }
 
     exports.showProcess = showProcess;
@@ -43,5 +49,13 @@ define(function (require, exports, module) {
         select.innerHTML = template(tpl, data)
         $(document.forms['add-task-of-design-process']).show();
     };
+
+    $(window).on('hashchange', function (ev) {
+            if (urlRule.test(window.location.hash))   showProcess();
+        }
+    );
+
+    if (urlRule.test(window.location.hash))  showProcess();
+
 });
 

@@ -53,6 +53,10 @@
     background: #b94a48;
 }
 
+.navbar {
+    border-radius: 0 !important;
+}
+
 #control .navbar-nav > li > a {
     color: #e6cac8;
     cursor: default;
@@ -137,7 +141,7 @@ form[name=add-task-of-design-process] .progress-bar span {
     font-size: 12px;
 }
 
-#navigation{
+#navigation {
     position: fixed;
     left: 0;
     bottom: 0;
