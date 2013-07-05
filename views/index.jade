@@ -11,7 +11,7 @@ block content
     #container
         #content
         - if(isLogin)
-            form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process")
+            form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process",style="display:none;")
                 div
                     select(name="type")
                 input#add-task-of-process-id(type="hidden",name="_id",value="")

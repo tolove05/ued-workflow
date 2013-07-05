@@ -71,9 +71,7 @@ define(function (require, exports, module) {
             success: function (data) {
                 if (data._id) {
                     exports.dialog.hide();
-                    loginSuccess(data);
-                    //更新左侧的任务列表
-                    require('./../task/design/show-task-list').getTaskList(data.name, {});
+                    window.location.reload();
                 } else {
                     alert('登陆失败')
                 }
@@ -108,7 +106,7 @@ define(function (require, exports, module) {
     //退出
     $(document).on('click', '.login-out', function () {
         $.get('/login-out', function (data) {
-            loginFail();
+            window.location.reload();
         });
     });
 

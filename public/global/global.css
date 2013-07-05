@@ -23,9 +23,11 @@
 .ks-dialog {
     background: #fff;
     padding: .8em;
-    border: solid 1px #1abc9c;
+    border: solid 1px #ccc;
+    background: #f8f8f8;
+    border-radius: 3px;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 12px rgba(0, 0, 0, .2);
 }
 
 .ks-dialog a.ks-ext-close {
@@ -33,7 +35,7 @@
     right: .5em;
     top: .5em;
     text-decoration: none;
-    color: #1abc9c;
+    color: #357ebd;
 }
 
 .ks-dialog .ks-stdmod-header {
@@ -44,7 +46,7 @@
 }
 
 .ks-overlay-mask-shown {
-    background: rgba(255, 255, 255, .5);
+    background: rgba(0, 0, 0, .5);
 }
 
 #control {
@@ -131,6 +133,6 @@ form[name=add-task-of-design-process] .progress-bar span {
     margin-left: 1em;
 }
 
-#sidebar a.list-group-item{
+#sidebar a.list-group-item {
     font-size: 12px;
 }
