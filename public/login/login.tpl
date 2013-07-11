@@ -13,7 +13,7 @@
             <tr>
                 <th></th>
                 <td>
-                    <input value="登陆" class="btn J-login" type="button"/>
+                    <input value="登陆" class="btn btn-primary J-login" type="button"/>
                 </td>
             </tr>
         </table>
@@ -37,7 +37,7 @@
             <tr>
                 <th></th>
                 <td>
-                    <input value="下一步" class="btn J-init-user" type="button"/>
+                    <input value="下一步" class="btn btn-primary J-init-user" type="button"/>
                 </td>
             </tr>
         </table>

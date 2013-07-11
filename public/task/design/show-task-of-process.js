@@ -10,7 +10,7 @@ define(function (require, exports, module) {
 
     var urlRule = /^#task\//;
 
-    $('#sidebar').on('mousedown', '.J-task-trigger', function (ev) {
+    $(document).on('mousedown', '.J-task-trigger', function (ev) {
         var $this = $(this);
         window.location.hash = 'task/' + JSON.stringify({_id: $this.data('_id')});
         showProcess();
@@ -18,7 +18,7 @@ define(function (require, exports, module) {
 
     var template = require('template/template/1.0.0/template-debug');
 
-    var user = require('user/list?callback=define');
+    var user = require('/user/list?callback=define');
 
     var tpl = require('./task-of-process-tpl.tpl');
 
@@ -35,6 +35,7 @@ define(function (require, exports, module) {
             $('#content').html(html);
             exports.showPermissions(res);
         });
+        $('.J-current-task-title').html($('div.J-task-list a' + '[data-_id=' + _id + ']').text())
         $('div.J-task-list a').removeClass('active').filter('[data-_id=' + _id + ']').addClass('active');
     }
 

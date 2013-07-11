@@ -13,7 +13,7 @@ define(function (require, exports, module) {
 
     require('./add-child-members.css');
 
-    var users = require('user/list?callback=define');
+    var users = require('/user/list?callback=define');
 
     function login(cb) {
         KISSY.use("overlay", function (S, O) {

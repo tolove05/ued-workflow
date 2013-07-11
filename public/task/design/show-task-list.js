@@ -16,8 +16,8 @@ define(function (require, exports, module) {
 
     exports.getTaskList = function (user) {
         $.getJSON('/task-of-design/list/' + user, function (res) {
-            $('#sidebar').find('div.J-task-list').html(template(tpl, res));
-            $('span.J-current-name').html(user);
+            $('#task-list').html(template(tpl, res));
+            $('span.J-current-task-name').html(user);
         });
 
     }

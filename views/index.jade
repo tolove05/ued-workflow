@@ -4,11 +4,35 @@ block content
 
     #control.navbar.navbar-inverse.bs-docs-nav
 
-    #sidebar
-        h1
-            span.J-current-name #{name}
-        .list-group.J-task-list
+    #main-search
+        form(action="",method="get")
+            input#main-search-input(type="text")
+            h3 任务状态
+            .btn-group
+                button(type="button",data-toggle="dropdown").btn.btn-default.dropdown-toggle
+                    | 全部
+                    span.caret
+                ul.dropdown-menu
+                    li
+                        a(href="#") 所有
+                    li
+                        a(href="#") 审核中
+                    li
+                        a(href="#") 返改
+                    li
+                        a(href="#") 通过
+                    li
+                        a(href="#") 关闭
+            div
+                h3 时间
+                button(type="button").btn.btn-primary 开始时间
+
+                button(type="button").btn.btn-primary 结束时间
     #container
+        #task-list-wrapper
+            #task-list.list-group.J-task-list
+        #task-process-content
+        h1.task-title.J-current-task-title
         #content
         - if(isLogin)
             form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process",style="display:none;")

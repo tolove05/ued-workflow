@@ -6,6 +6,24 @@
  * To change this template use File | Settings | File Templates.
  */
 
+
+seajs.config({
+    base: "/sea-modules/",
+    vars: {
+        locale: 'zh-cn'
+    },
+    plugins: ['text'],
+    alias: {
+        "$": 'jquery/jquery/1.10.1/jquery',
+        template: 'template/template/1.0.0/template-debug',
+        moment: 'gallery/moment/2.0.0/moment',
+        sha: '/crypto/sha',
+        calendar: 'arale/calendar/0.9.0/calendar'
+    },
+    preload: ['$', 'template', 'moment', 'sha', 'calendar']
+});
+
+
 define(function (require, exports, module) {
 
 
@@ -13,8 +31,14 @@ define(function (require, exports, module) {
         require.async('/user/init');
         //设计师
         require.async('/task/design/init');
+
+        require.async('/search/search');
     }
 
     require('/login/init');
+
+    require('./global/moment');
+
+    $('.dropdown-toggle').dropdown()
 
 });
