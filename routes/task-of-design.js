@@ -160,15 +160,15 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
             name: task_user_name
         }, {_id: 1, group: 1, name: 1}, function (err, result) {
 
-            //当前任务是否为自己的任务
-            var isOwn = result._id.toString() === req.session._id;
-
             if (result === null) {
                 serverResult.status = -3;
                 serverResult.err.push('该用户尚未完成初次登陆，请通知对方对方完成第一次登陆');
                 res.json(serverResult);
                 return;
             }
+
+            //当前任务是否为自己的任务
+            var isOwn = result._id.toString() === req.session._id;
 
             var taskUserGroup = result.group;
 

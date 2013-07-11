@@ -10,15 +10,12 @@ define(function (require, exports, module) {
 
 
     var tpl = require('./show-task-list.tpl');
-
     var template = require('template/template/1.0.0/template-debug');
-
 
     exports.getTaskList = function (user) {
         $.getJSON('/task-of-design/list/' + user, function (res) {
             $('#task-list').html(template(tpl, res));
-            $('span.J-current-task-name').html(user);
         });
-
     }
+
 });

@@ -51,7 +51,7 @@ define(function (require, exports, module) {
         $(document.forms['add-task-of-design-process']).show();
     };
 
-    $(window).on('hashchange', function (ev) {
+    $(window).on('hashchange', function () {
             if (urlRule.test(window.location.hash))   showProcess();
         }
     );

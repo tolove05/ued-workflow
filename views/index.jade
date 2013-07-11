@@ -5,32 +5,34 @@ block content
     #control.navbar.navbar-inverse.bs-docs-nav
 
     #main-search
-        form(action="",method="get")
-            input#main-search-input(type="text")
+        form(action="/search",method="get",name="search")
+            input#main-search-input(type="text",name="keyword")
             h3 任务状态
-            .btn-group
-                button(type="button",data-toggle="dropdown").btn.btn-default.dropdown-toggle
-                    | 全部
-                    span.caret
+            .btn-group#taks-type-container
+                button#task-type(type="button",data-toggle="dropdown").btn.btn-default.dropdown-toggle
+                    span.type  全部
+                    span.caret(style="margin-left:14px;")
                 ul.dropdown-menu
                     li
-                        a(href="#") 所有
+                        a 所有
                     li
-                        a(href="#") 审核中
+                        a 审核中
                     li
-                        a(href="#") 返改
+                        a 返改
                     li
-                        a(href="#") 通过
+                        a 通过
                     li
-                        a(href="#") 关闭
+                        a 关闭
             div#time-select
                 h3 时间
                 div
-                    button#start-time(type="button").btn.btn-primary 开始时间：
+                    button#start-time(type="button").btn.btn-info 开始时间：
                         span 未设置
                 div
-                    button#end-time(type="button").btn.btn-primary 结束时间：
+                    button#end-time(type="button").btn.btn-info 结束时间：
                         span 未设置
+            br
+            button#start-time(type="submit").btn.btn-default.btn-large 开始搜索
     #container
         #task-list-wrapper
             #task-list.list-group.J-task-list

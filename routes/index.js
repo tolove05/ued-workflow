@@ -30,4 +30,6 @@ require('./task-of-design');
 
 require('./user');
 
-require('./save-file')
+require('./save-file');
+
+require('./search');

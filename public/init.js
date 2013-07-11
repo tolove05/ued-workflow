@@ -40,6 +40,5 @@ define(function (require, exports, module) {
 
     require('./global/moment');
 
-    $('.dropdown-toggle').dropdown()
 
 });
