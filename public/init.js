@@ -14,8 +14,8 @@ seajs.config({
     },
     plugins: ['text'],
     alias: {
-        "$": 'jquery/jquery/1.10.1/jquery',
-        template: 'template/template/1.0.0/template-debug',
+        "$": '/jquery-2.0.3.min',
+        template: 'template/template/1.0.0/template',
         moment: 'gallery/moment/2.0.0/moment',
         sha: '/crypto/sha',
         calendar: 'arale/calendar/0.9.0/calendar',
