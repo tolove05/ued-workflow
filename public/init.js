@@ -18,7 +18,8 @@ seajs.config({
         template: 'template/template/1.0.0/template-debug',
         moment: 'gallery/moment/2.0.0/moment',
         sha: '/crypto/sha',
-        calendar: 'arale/calendar/0.9.0/calendar'
+        calendar: 'arale/calendar/0.9.0/calendar',
+        calendarCSS: 'arale/calendar/0.9.0/calendar.css'
     },
     preload: ['$', 'template', 'moment', 'sha', 'calendar']
 });

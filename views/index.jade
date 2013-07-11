@@ -23,11 +23,14 @@ block content
                         a(href="#") 通过
                     li
                         a(href="#") 关闭
-            div
+            div#time-select
                 h3 时间
-                button(type="button").btn.btn-primary 开始时间
-
-                button(type="button").btn.btn-primary 结束时间
+                div
+                    button#start-time(type="button").btn.btn-primary 开始时间：
+                        span 未设置
+                div
+                    button#end-time(type="button").btn.btn-primary 结束时间：
+                        span 未设置
     #container
         #task-list-wrapper
             #task-list.list-group.J-task-list

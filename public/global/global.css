@@ -88,7 +88,7 @@
     top: 66px;
     width: 230px;
     height: 200px;
-    font-family: "Microsoft Yahei",sans-serif;
+    font-family: "Microsoft Yahei", sans-serif;
 }
 
 #main-search-input {
@@ -245,3 +245,6 @@ form[name=add-task-of-design-process] .progress-bar span {
     background-color: rgba(0, 0, 0, .05)
 }
 
+#time-select div {
+    margin-bottom: 5px;
+}

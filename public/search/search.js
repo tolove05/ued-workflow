@@ -7,8 +7,10 @@
  */
 
 define(function (require, exports, module) {
-    var calendar = require('arale/calendar/0.9.0/calendar');
-    var template = require('template/template/1.0.0/template-debug');
+    var Calendar = require('calendar');
+    require('calendarCSS');
+    new Calendar({
+        trigger: '#start-time'
+    });
 
-    console.log(calendar,template);
 });
