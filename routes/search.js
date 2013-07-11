@@ -33,4 +33,20 @@ app.get('/search', function (req, res) {
                 res.json({data: data});
             })
 
+    /*DB.mongodb.command({ text: 'collectionName', search: '短发' }, function (e, o) {
+     if (e) {
+     console.log(e, 'error')
+     }
+     else {
+     console.log(e, o)
+     }
+     });*/
+    DB.dbServer.command({ text: 'task-of-design', search: '短发' }, function (e, o) {
+        if (e) {
+            console.log(e, 'error')
+        }
+        else {
+            console.log(JSON.stringify(o))
+        }
+    })
 });

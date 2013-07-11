@@ -119,7 +119,7 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
     };
 
     if (!req.session._id) {
-        serverResult.err.push('xu');
+        serverResult.err.push('需要登录');
         serverResult.status = 0;
         res.json(serverResult);
         return;
