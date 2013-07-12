@@ -198,6 +198,7 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
                         ['time_stamp', 1]
                     ]).toArray(function (err, docs) {
                         res.json({
+                            status: 1,
                             data: docs,
                             isSenior: isSenior,
                             //是否该任务的拥有者

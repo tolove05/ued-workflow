@@ -38,20 +38,22 @@ block content
             #task-list.list-group.J-task-list
         #task-process-content
         h1.task-title.J-current-task-title
-        #content
-        - if(isLogin)
-            form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process",style="display:none;")
-                div
-                    select(name="type")
-                input#add-task-of-process-id(type="hidden",name="_id",value="")
-                textarea(type="text",name="content",placeholder="您可以在这里写上更多的说明")
-                label.upload-file-field-label(for="upload-file-field") 插入附件
-                input#upload-file-field(type="file",multiple="multiple")
-                #p
-                #preview-file
-                #upload-list
-                .J-alert.alert(style="display:none;")
-                    | 请
-                button.btn.btn-primary.J-add-task-of-design-process(type="button") 提交
+        #task-process-container
+            #content
+            - if(isLogin)
+                form(action="/add-task-of-design-process",method="post",name="add-task-of-design-process",style="display:none;")
+                    div
+                        select(name="type")
+                    input#add-task-of-process-id(type="hidden",name="_id",value="")
+                    textarea(type="text",name="content",placeholder="您可以在这里写上更多的说明")
+                    label.upload-file-field-label(for="upload-file-field") 插入附件
+                    input#upload-file-field(type="file",multiple="multiple")
+                    #p
+                    #preview-file
+                    #upload-list
+                    .J-alert.alert(style="display:none;")
+                        | 请
+                    button.btn.btn-primary.J-add-task-of-design-process(type="button") 提交
+        a#show-task-list Show Task List
     script
         var page_is_login=#{isLogin};

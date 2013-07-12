@@ -13,7 +13,6 @@ define(function (require, exports, module) {
     $(document).on('mousedown', '.J-task-trigger', function (ev) {
         var $this = $(this);
         window.location.hash = 'task/' + JSON.stringify({_id: $this.data('_id')});
-        showProcess();
     });
 
     var template = require('template/template/1.0.0/template-debug');
@@ -30,10 +29,13 @@ define(function (require, exports, module) {
         }
         var _id = param._id;
         $('#add-task-of-process-id').val(_id);
-        $.getJSON('/task-of-design/process/' + _id + '?r=' + Math.random(), function (res) {
-            var html = template(tpl, {data: res.data, user: user});
+        $.getJSON('/task-of-design/process/' + _id + '?r=' + Math.random(), function (result) {
+            result.user = user;
+            var html = template(tpl, result);
             $('#content').html(html);
-            exports.showPermissions(res);
+            exports.showPermissions(result);
+            $('#task-list-wrapper').fadeOut();
+            $('#task-process-container').fadeIn();
         });
         $('.J-current-task-title').html($('div.J-task-list a' + '[data-_id=' + _id + ']').text())
         $('div.J-task-list a').removeClass('active').filter('[data-_id=' + _id + ']').addClass('active');
@@ -55,6 +57,11 @@ define(function (require, exports, module) {
             if (urlRule.test(window.location.hash))   showProcess();
         }
     );
+
+    $('#show-task-list').click(function () {
+        $('#task-list-wrapper').fadeIn();
+        $('#task-process-container').fadeOut();
+    });
 
     if (urlRule.test(window.location.hash))  showProcess();
 

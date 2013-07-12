@@ -44,8 +44,6 @@ define(function (require, exports, module) {
 
     });
 
-    $('#task-type').dropdown();
-
     $('#taks-type-container').on('click', 'a', function (ev) {
         var originTarget = ev.originalEvent.currentTarget;
         $(originTarget).find('span.type').text($(ev.target).text())
@@ -66,8 +64,11 @@ define(function (require, exports, module) {
         if (!param.keywords) delete param.keywords;
 
         $.get('/search', param, function (result) {
-            console.log(result);
-            $('#task-list').html(template(tpl, result));
+            if (!result.err) {
+                $('#task-list').html(template(tpl, result));
+                $('#task-list-wrapper').fadeIn();
+                $('#task-process-container').fadeOut();
+            }
         })
 
     }

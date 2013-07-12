@@ -762,12 +762,14 @@ pre code {
   clear: both;
 }
 
+/*
 @media (min-width: 768px) {
   .row {
     margin-right: -15px;
     margin-left: -15px;
   }
 }
+*/
 
 .row .row {
   margin-right: -15px;
@@ -879,6 +881,7 @@ pre code {
   width: 100%;
 }
 
+/*
 @media (min-width: 768px) {
   .container {
     max-width: 728px;
@@ -1095,6 +1098,7 @@ pre code {
     max-width: 1170px;
   }
 }
+*/
 
 table {
   max-width: 100%;
@@ -1809,11 +1813,11 @@ input[type="color"].input-small {
   padding-top: 6px;
 }
 
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {
   .form-horizontal .control-label {
     text-align: right;
   }
-}
+}*/
 
 .btn {
   display: inline-block;
@@ -3729,7 +3733,7 @@ button.close {
   border-bottom-color: #ffffff;
 }
 
-@media screen and (min-width: 768px) {
+/*@media screen and (min-width: 768px) {*/
   .navbar-brand {
     float: left;
     margin-right: 5px;
@@ -3760,7 +3764,7 @@ button.close {
     height: auto !important;
     overflow: visible !important;
   }
-}
+/*}*/
 
 .navbar-btn {
   margin-top: 6px;

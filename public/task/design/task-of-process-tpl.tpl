@@ -1,3 +1,5 @@
+#if(typeof data==='object')
+#if(data.length>0)
 #each(item in data)
 <dl>
     <dt>
@@ -11,7 +13,8 @@
         #elseif(item.type==5)
         <span class="label label-danger">该需求被关闭</span>
         #end
-        <span class="J-moment moment" style="font-size: 12px;font-weight: normal" data-time-stamp="#{item.time_stamp}"></span>
+        <span class="J-moment moment" style="font-size: 12px;font-weight: normal"
+              data-time-stamp="#{item.time_stamp}"></span>
     </dt>
     <dd>
         #if(item.content)
@@ -30,4 +33,19 @@
         #end
     </dd>
 </dl>
+#end
+#else
+<div class="alert alert-block">
+    <h4>该任务还没有任何进度记录</h4>
+
+    <p>#if(typeof msg!=='undefined')#{msg}#end </p>
+</div>
+#end
+#end
+#if(typeof err !=='undefined' && err instanceof Array)
+<div class="alert alert-block">
+    <h4>没有任何数据</h4>
+
+    <p>#{err.join('')}</p>
+</div>
 #end

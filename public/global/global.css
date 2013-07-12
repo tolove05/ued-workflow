@@ -80,6 +80,9 @@
     left: 0;
     top: 0;
     width: 100%;
+    bottom: 0;
+    height: 100%;
+    overflow: auto;
 }
 
 #main-search {
@@ -102,6 +105,8 @@
     left: 248px;
     top: 66px;
     right: 10px;
+    bottom: 12px;
+    overflow: auto;
 }
 
 h1 {
@@ -177,17 +182,9 @@ form[name=add-task-of-design-process] .progress-bar span {
     font-size: 12px;
 }
 
-#navigation {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-}
-
 ::-webkit-scrollbar {
     height: 11px;
     width: 11px;
-    margin: 1em;
-    padding: 1em;
 }
 
 ::-webkit-scrollbar-button {
@@ -247,4 +244,19 @@ form[name=add-task-of-design-process] .progress-bar span {
 
 #time-select div {
     margin-bottom: 5px;
+}
+
+#task-list {
+    margin-right: 5px;
+}
+
+#show-task-list {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+#container h1 {
+    margin-top: 0;
 }
