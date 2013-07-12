@@ -35,7 +35,7 @@
 </dl>
 #end
 #else
-<div class="alert alert-block">
+<div class="alert alert-danger">
     <h4>该任务还没有任何进度记录</h4>
 
     <p>#if(typeof msg!=='undefined')#{msg}#end </p>
@@ -43,7 +43,7 @@
 #end
 #end
 #if(typeof err !=='undefined' && err instanceof Array)
-<div class="alert alert-block">
+<div class="alert alert-danger">
     <h4>没有任何数据</h4>
 
     <p>#{err.join('')}</p>

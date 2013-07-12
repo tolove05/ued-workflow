@@ -36,8 +36,12 @@ define(function (require, exports, module) {
             exports.showPermissions(result);
             $('#task-list-wrapper').fadeOut();
             $('#task-process-container').fadeIn();
+            if (result && result.task) {
+                $('.J-current-task-title').html(result.task.name)
+            } else {
+                $('.J-current-task-title').html('无法显示该任务')
+            }
         });
-        $('.J-current-task-title').html($('div.J-task-list a' + '[data-_id=' + _id + ']').text())
         $('div.J-task-list a').removeClass('active').filter('[data-_id=' + _id + ']').addClass('active');
     }
 
@@ -45,12 +49,15 @@ define(function (require, exports, module) {
 
     //相应改变当前登陆者，所拥有的权限
     exports.showPermissions = function (data) {
-        var template = require('template/template/1.0.0/template-debug');
-        var tpl = require('./show-task-of-process.tpl');
-        var form = document.forms['add-task-of-design-process'];
-        var select = form.elements['type'];
-        select.innerHTML = template(tpl, data)
-        $(document.forms['add-task-of-design-process']).show();
+        //-3表示该任务对应的实施者尚不存在
+        if (data.status !== -3) {
+            var template = require('template/template/1.0.0/template-debug');
+            var tpl = require('./show-task-of-process.tpl');
+            var form = document.forms['add-task-of-design-process'];
+            var select = form.elements['type'];
+            select.innerHTML = template(tpl, data);
+            $(document.forms['add-task-of-design-process']).show();
+        }
     };
 
     $(window).on('hashchange', function () {

@@ -142,7 +142,7 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
     //首先查询出该任务的实现者
     task.findOne({
         _id: _id
-    }, {_id: 0, to: 1, from: 1}, function (err, result) {
+    }, { }, function (err, result) {
 
         if (result === null) {
             serverResult.status = -2;
@@ -150,6 +150,8 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
             res.json(serverResult);
             return;
         }
+
+        var task = result;
 
         //查询当前登陆用户，是否为该任务执行者的上级
         //执行该步骤后，才能判断出当前登陆者针对该任务所拥有的权限
@@ -201,7 +203,7 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
                             status: 1,
                             data: docs,
                             isSenior: isSenior,
-                            //是否该任务的拥有者
+                            task: task, //是否该任务的拥有者
                             isOwn: isOwn,
                             taskUserGroup: taskUserGroup
                         })
@@ -209,7 +211,8 @@ app.get(/^\/task-of-design\/process\/([a-z0-9]{24})$/, function (req, res) {
             })
         });
     });
-});
+})
+;
 
 
 app.get(/^\/task-of-design\/list\/(\S+)/, function (req, res) {
